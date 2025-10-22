@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import "./Hero.css"; // Animation CSS
 
 // ✅ Import your local image
