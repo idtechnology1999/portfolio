@@ -20,14 +20,15 @@
 }
 
 #background {
-background-image: 
-   
-    url("../assets/images/backgroundimage.png");  background-repeat: no-repeat;
+background-image: url("../assets/images/backgroundimage.png");  background-repeat: no-repeat;
   /* background-position: center; */
   background-size: cover;     /* ✅ Keeps aspect ratio and fills area */
   background-attachment: fixed; /* Optional: creates a subtle parallax effect */
   position: relative;
   height: 70vh;
+  background-attachment: fixed;
+
+ 
 }
 
 
@@ -200,5 +201,17 @@ background-image:
     box-shadow: 0 0 25px 6px rgba(37, 211, 102, 0.9),
                 0 0 40px 12px rgba(37, 211, 102, 0.7);
     transform: scale(1.07);
+  }
+}
+
+@media screen and (max-width:533px){
+  #background{
+    background: 
+  linear-gradient(
+    to bottom right,
+    rgba(255, 255, 255, 0.8), 
+    rgba(0, 0, 0, 0.8)
+  ),
+  url("../assets/images/backgroundimage.png");
   }
 }

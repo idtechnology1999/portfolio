@@ -70,6 +70,9 @@ export default function Hero() {
     objectFit: "cover",
     display: "block",
     margin: "0 auto",
+    position:"absolute",
+    zIndex:"23",
+
               }}
             />
           </div>
@@ -81,18 +84,8 @@ export default function Hero() {
            
           >
             <div className="hero-text">
-              <h1
-                className="fw-bold mb-2"
-                style={{ color: "#222", fontSize: "2.8rem" }}
-              >
-                ID TECH
-              </h1>
-              <h3
-                style={{ color: "#555", fontWeight: "400" }}
-                className="mb-3"
-              >
-                Real World Innovations
-              </h3>
+            
+            
               <p
                 style={{ color: "#666", fontSize: "1.1rem", lineHeight: "1.6" }}
                 className="mb-4"

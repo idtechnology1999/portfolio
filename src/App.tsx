@@ -2,7 +2,7 @@
 import './style/global.css';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import About from './components/About';
+// import About from './components/About';
 import Skills from './components/Skills';
 import Team from './components/Team';
 import Portfolio from './components/Portfolio';
@@ -15,7 +15,7 @@ function App() {
     <>
     <Navbar/> 
     <Hero />
-    <About/>
+    {/* <About/> */}
     <Skills/>
     <Team/>
     <Portfolio/>
