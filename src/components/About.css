@@ -1,0 +1,113 @@
+/* --- Section Layout --- */
+.about-section {
+  background: #f8f9fb;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+}
+
+.about-container {
+  max-width: 1100px;
+  width: 100%;
+  background: #fff;
+  border-radius: 20px;
+  padding: 50px 40px;
+  margin: 0 20px;
+  animation: fadeInUp 1s ease;
+  border: 1px solid #eee;
+}
+
+/* --- Image --- */
+.about-img {
+  border-radius: 20px;
+  max-width: 280px;
+  transition: transform 0.6s ease;
+  transform: perspective(800px) rotateY(5deg);
+}
+
+.about-img:hover {
+  transform: perspective(800px) rotateY(0deg) scale(1.05);
+}
+
+/* --- Text --- */
+.about-text {
+  text-align: justify;
+}
+
+.about-title {
+  font-weight: 700;
+  color: #222;
+  font-size: 2rem;
+}
+
+.about-desc {
+  color: #555;
+  font-size: 1.05rem;
+  line-height: 1.9;
+  margin-bottom: 15px;
+}
+
+/* --- Contact Info --- */
+.contact-info p {
+  color: #333;
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.contact-info a {
+  color: #555;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-info a:hover {
+  color: #ffa500;
+}
+
+/* --- Button --- */
+.about-btn {
+  background-color: #ffa500;
+  color: #fff;
+  border-radius: 25px;
+  padding: 10px 25px;
+  font-weight: 500;
+  border: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.about-btn:hover {
+  background-color: #ff8c00;
+  transform: translateY(-2px);
+}
+
+/* --- Animation --- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .about-container {
+    padding: 30px 20px;
+  }
+
+  .about-img {
+    margin-bottom: 20px;
+  }
+
+  .about-title {
+    text-align: center;
+  }
+
+  .about-text {
+    text-align: left;
+  }
+}

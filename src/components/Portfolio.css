@@ -1,0 +1,78 @@
+.portfolio-section {
+  background: #f9f9f9;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.section-title {
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #ffa500;
+  letter-spacing: 0.5px;
+}
+
+.section-desc {
+  color: #555;
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+/* 🎯 Project Card */
+.project-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.project-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+}
+
+.project-body {
+  padding: 25px 20px;
+  text-align: left;
+}
+
+.project-title {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 1.25rem;
+}
+
+.project-desc {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.project-link {
+  color: #007bff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.project-link:hover {
+  color: #ffa500;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1.9rem;
+  }
+
+  .project-body {
+    padding: 20px 15px;
+  }
+}

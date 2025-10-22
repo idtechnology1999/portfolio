@@ -1,0 +1,57 @@
+.skills-section {
+  min-height: 100vh;
+  background: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffa500;
+}
+
+.section-desc {
+  max-width: 700px;
+  color: #555;
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+
+/* Skill Card */
+.skill-card {
+  background: #fff;
+  border-radius: 15px;
+  padding: 25px 20px;
+  transition: all 0.4s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.skill-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.skill-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.skill-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin-top: 15px;
+}
+
+.skill-desc {
+  font-size: 0.95rem;
+  color: #666;
+  margin-top: 8px;
+  line-height: 1.6;
+}

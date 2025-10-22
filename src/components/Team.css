@@ -1,0 +1,98 @@
+.team-section {
+  background: #f9f9f9;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.section-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #ffa500;
+  letter-spacing: 0.5px;
+}
+
+.section-desc {
+  color: #555;
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+/* 👔 Manager */
+.manager-card {
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  max-width: 400px;
+  transition: all 0.3s ease;
+}
+
+.manager-card:hover {
+  transform: translateY(-5px);
+}
+
+.manager-img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid #ffa500;
+}
+
+/* 👥 Team Members */
+.team-card {
+  background: #fff;
+  padding: 25px 15px;
+  border-radius: 18px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.team-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+}
+
+.team-img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #ffa500;
+}
+
+/* 📱 Responsive Adjustments */
+@media (max-width: 768px) {
+  .manager-img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .team-img {
+    width: 95px;
+    height: 95px;
+  }
+
+  .team-card {
+    padding: 20px 10px;
+  }
+
+  .section-title {
+    font-size: 1.9rem;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+  }
+}
+
+/* 🧍 Single-column layout on small screens */
+@media (max-width: 576px) {
+  .col-12.col-sm-6.col-md-4.col-lg-3 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
