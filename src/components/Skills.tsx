@@ -1,51 +1,24 @@
 import "./Skills.css";
-import frontendImg from "../assets/images/frontend.jpg";
-import backendImg from "../assets/images/backend.jpg";
-import mobileImg from "../assets/images/Mobile-App-Development.jpg";
-import databaseImg from "../assets/images/database.jpg";
-import uiuxImg from "../assets/images/representations-user-experience-interface-design.jpg";
-import hardwareImg from "../assets/images/hardware.jpg";
-
+import { useEffect, useState } from "react";
+import axios from "axios";
+const apiurl = import.meta.env.VITE_API_BASE_URL;
+interface data{
+  title: string,
+  image: string,
+  Description: string
+}
 export default function Skills() {
-  const skills = [
-    {
-      title: "Frontend Development",
-      image: frontendImg,
-      description:
-        "Building interactive and responsive user interfaces using HTML, CSS, JavaScript, Bootstrap, Tailwind CSS, and React.",
-    },
-    {
-      title: "Backend Development",
-      image: backendImg,
-      description:
-        "Developing secure and scalable server-side logic with Node.js, php, Express, and RESTful APIs for dynamic applications.",
-    },
-   {
-  title: "Mobile App Development",
-  image: mobileImg,
-  description:
-    "Building cross-platform mobile apps with React Native and Flutter (Dart) for seamless Android and iOS performance.",
-},
+const [skills, setskills] = useState<data[]>([])
+useEffect(()=>{
+  axios.get(`${apiurl}/api/Course/fetch`).
+  then((response)=>setskills(response.data.message))
+  .catch((error)=>{
+    console.log("unable to fetch, error occur", error)
+    setskills([])
+  })
+},[])
 
-    {
-      title: "Database Management",
-      image: databaseImg,
-      description:
-        "Managing and structuring data efficiently using MySQL, MongoDB, and Firebase for reliable performance.",
-    },
-    {
-      title: "UI / UX Design",
-      image: uiuxImg,
-      description:
-        "Creating visually appealing, intuitive designs that enhance user experience and accessibility.",
-    },
-    {
-      title: "Computer Hardware & Networking",
-      image: hardwareImg,
-      description:
-        "Troubleshooting, assembling, and maintaining hardware systems and network infrastructures.",
-    },
-  ];
+
 
   return (
     <section id="skills" className="skills-section text-center py-5">
@@ -59,19 +32,26 @@ export default function Skills() {
         </p>
 
         <div className="row g-4">
-          {skills.map((skill, index) => (
+        {skills.length == 0 ?
+         <>
+              <div className="alert alert-warning text-center mt-4" role="alert">
+            <strong>Loading ....... </strong>
+          </div>
+         </>
+         :
+         <>    {skills.map((skill, index) => (
             <div className="col-md-4 col-sm-6" key={index}>
               <div className="skill-card shadow-sm">
                 <img
-                  src={skill.image}
+                  src={`${apiurl}/imgCourse/${skill.image}`}
                   alt={skill.title}
                   className="img-fluid skill-img"
                 />
                 <h5 className="mt-3 skill-title">{skill.title}</h5>
-                <p className="skill-desc">{skill.description}</p>
+                <p className="skill-desc">{skill.Description}</p>
               </div>
             </div>
-          ))}
+          ))}</>}
         </div>
       </div>
     </section>

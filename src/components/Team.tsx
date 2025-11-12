@@ -1,18 +1,32 @@
 
 import "./Team.css";
 import managerImg from "../assets/images/image2.png"
-import member1 from "../assets/images/database.jpg";
-import member2 from "../assets/images/database.jpg";
-import member3 from "../assets/images/frontend too.jpg";
-import member4 from "../assets/images/database.jpg";
+import { useEffect, useState } from "react";
+import axios from "axios";
+const apiurl = import.meta.env.VITE_API_BASE_URL;
+interface Team {
+    full_name: string,
+    picture: string,
+    profession: string,
+    _id: string
+
+}
+
+
 
 export default function Team() {
-  const members = [
-    { name: "Sarah Johnson", role: "Frontend Developer", image: member1 },
-    { name: "Michael Smith", role: "Backend Engineer", image: member2 },
-    { name: "Olawale o.o", role: "UI/UX Designer", image: member3 },
-    { name: "Owolabi Elijah", role: "Mobile App Developer", image: member4 },
-  ];
+const [members, setmembers] = useState<Team[]>([])
+
+useEffect(()=>{
+axios.get(`${apiurl}/api/Team/Fetch`)
+.then((response)=>setmembers(response.data.message))
+.catch((error)=>{
+  setmembers([])
+  console.log("error occur",error)
+}
+)
+},[])
+
 
   return (
     <section id="team" className="team-section py-5 text-center">
@@ -50,6 +64,16 @@ export default function Team() {
 
         {/* 👥 Other Team Members */}
         <div className="row g-4 justify-content-center">
+        {members.length == 0?
+        
+        <>
+          <div className="alert alert-warning text-center mt-4" role="alert">
+            <strong>Loading ..........</strong>
+          </div>
+        </>
+        :
+        
+        <>
           {members.map((member, index) => (
             <div
               className="col-12 col-sm-6 col-md-4 col-lg-3"
@@ -60,17 +84,23 @@ export default function Team() {
             >
               <div className="team-card">
                 <img
-                  src={member.image}
-                  alt={member.name}
+                  src={`${apiurl}/imgTeam/${member.picture}`}
+                  alt={member.picture}
                   className="team-img mb-3"
                 />
-                <h6 className="fw-bold">{member.name}</h6>
-                <p className="text-muted mb-0">{member.role}</p>
+                <h6 className="fw-bold">{member.full_name}</h6>
+                <p className="text-muted mb-0">{member.profession}</p>
+              
+  
+                
               </div>
             </div>
           ))}
+        </>}
         </div>
+    
       </div>
     </section>
   );
 } 
+

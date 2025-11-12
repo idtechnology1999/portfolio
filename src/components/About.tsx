@@ -2,7 +2,7 @@ import "./About.css";
 export default function About() {
   return (
     <section
-      id="about"
+      id="#about"
       className="about-section py-5 d-flex justify-content-center align-items-center"
     >
       <div className="about-container text-center">

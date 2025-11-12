@@ -27,8 +27,17 @@ background-image: url("../assets/images/backgroundimage.png");  background-repea
   position: relative;
   height: 70vh;
   background-attachment: fixed;
+}
+.blinking-cursor {
+  display: inline-block;
+  width: 1ch;
+  animation: blink 1s step-start infinite;
+}
 
- 
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
 }
 
 

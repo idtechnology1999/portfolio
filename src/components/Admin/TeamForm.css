@@ -1,0 +1,57 @@
+.team-management {
+  margin-left: 260px;
+  padding: 40px;
+  font-family: "Poppins", sans-serif;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #3b82f6;
+}
+
+.page-subtitle {
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.form-container {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  max-width: 600px;
+}
+
+.form-container h3 {
+  color: #3b82f6;
+  margin-bottom: 20px;
+}
+
+.form-container label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.form-container input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+}
+
+.form-container button {
+  background: linear-gradient(90deg, #3b82f6, #6366f1);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.form-container button:hover {
+  opacity: 0.9;
+}

@@ -1,0 +1,45 @@
+.dots-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dots-loader div {
+  width: 6px;
+  height: 6px;
+  margin: 0 3px;
+  background: #fff; /* dot color (white because button is primary) */
+  border-radius: 50%;
+  animation: bounce 0.6s infinite alternate;
+}
+
+.dots-loader div:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dots-loader div:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-6px);
+  }
+}
+
+.shake-alert {
+  animation: shake 0.45s ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+  100% { transform: translateX(0); }
+}

@@ -1,0 +1,72 @@
+.contact-section {
+  background: #f9f9f9;
+  padding: 70px 0;
+}
+
+/* Title Style - matches brand */
+.section-title {
+  color: #ffa500;
+  font-size: 2.3rem;
+  font-weight: 700;
+}
+
+.section-desc {
+  color: #555;
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+/* Card Style */
+.contact-card {
+  background: #fff;
+  padding: 30px 35px;
+  border-radius: 18px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  transition: 0.3s;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Buttons */
+.contact-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  margin-bottom: 12px;
+  transition: 0.3s;
+}
+
+/* WhatsApp Green */
+.whatsapp-btn {
+  background: #25d366;
+  color: #fff;
+}
+
+.whatsapp-btn:hover {
+  background: #1ebf58;
+}
+
+/* Locations */
+.location-item {
+  font-size: 1.05rem;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 576px) {
+  .section-title {
+    font-size: 1.9rem;
+  }
+
+  .contact-card {
+    padding: 25px 20px;
+  }
+}

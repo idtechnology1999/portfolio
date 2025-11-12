@@ -41,11 +41,11 @@ export default function Navbar() {
           <ul className="navbar-nav ms-auto align-items-center gap-lg-2">
             {[
               { id: "/", icon: "house", label: "Home" },
-              { id: "about", icon: "person", label: "About" },
-               { id: "team", icon: "people", label: "Team" },
-              { id: "skills", icon: "lightning", label: "Skills" },
-              { id: "projects", icon: "window-stack", label: "Projects" },
-              { id: "contact", icon: "envelope", label: "Contact" },
+              // { id: "#about", icon: "person", label: "About" },
+               { id: "#team", icon: "people", label: "Team" },
+              { id: "#skills", icon: "lightning", label: "Skills" },
+              { id: "#projects", icon: "window-stack", label: "Projects" },
+              { id: "#contact", icon: "envelope", label: "Contact" },
             ].map((item, index) => (
               <li key={index} className="nav-item">
                 <a
