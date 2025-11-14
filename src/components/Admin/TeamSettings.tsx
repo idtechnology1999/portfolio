@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-// import type { FormEvent } from "react";
 
 const apiurl = import.meta.env.VITE_API_BASE_URL;
 
-// ✅ Team member type
+// -----------------------------
+// TYPES
+// -----------------------------
 interface TeamMember {
   _id: string;
   full_name: string;
@@ -12,186 +13,171 @@ interface TeamMember {
   picture?: string;
 }
 
-// ✅ Extend for editing to include new image
 interface EditingMember extends TeamMember {
-  newPicture?: File | null;
+  newPicture: File | null;
 }
 
+// -----------------------------
+// COMPONENT
+// -----------------------------
 export default function Settings() {
-  const [message, setMessage] = useState<string>("");
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [editingMember, setEditingMember] = useState<EditingMember | null>(null);
+  const [message, setMessage] = useState<string>("");
 
-// ✅ Fetch members on load
-useEffect(() => {
-  fetchMembers();
-}, []);
+  // -----------------------------
+  // FETCH MEMBERS
+  // -----------------------------
+  useEffect(() => {
+    fetchMembers();
+  }, []);
 
-function fetchMembers() {
-  axios
-    .get<TeamMember[]>(`${apiurl}/api/Team/Fetch`) // <-- directly an array
-    .then((res) => setMembers(res.data))           // <-- no .message
-    .catch((err) => console.error("Error fetching members:", err));
-}
-
-  // ✅ Edit member
-  function handleEdit(member: TeamMember) {
-    setEditingMember(member);
-  }
-
-  // ✅ Update member with optional new image
-  function handleUpdateWithImage() {
-    if (!editingMember || !editingMember._id) return;
-
-    const formData = new FormData();
-    formData.append("full_name", editingMember.full_name);
-    formData.append("profession", editingMember.profession);
-
-    if (editingMember.newPicture) {
-      formData.append("picture", editingMember.newPicture);
+  const fetchMembers = async () => {
+    try {
+      const res = await axios.get<TeamMember[]>(`${apiurl}/api/Team/Fetch`);
+      setMembers(res.data);
+    } catch (err) {
+      console.error("Error fetching members:", err);
+      setMessage("Error fetching team members");
     }
+  };
 
-    axios
-      .put(`${apiurl}/api/Team/edit/${editingMember._id}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((res) => {
-        setMessage(res.data.message);
-        setEditingMember(null);
-        fetchMembers();
-      })
-      .catch((err) => {
-        console.error(err);
-        setMessage("Error updating member");
-      });
-  }
+  // -----------------------------
+  // EDIT MEMBER
+  // -----------------------------
+  const handleEdit = (member: TeamMember) => {
+    setEditingMember({
+      ...member,
+      newPicture: null,
+    });
+  };
 
-  // ✅ Delete member
-  function handleDelete(memberId: string) {
-    axios
-      .delete(`${apiurl}/api/Team/delete/${memberId}`)
-      .then((res) => {
-        setMessage(res.data.message);
-        fetchMembers();
-      })
-      .catch((err) => {
-        console.error(err);
-        setMessage("Error deleting member");
-      });
-  }
+  // -----------------------------
+  // UPDATE MEMBER
+  // -----------------------------
+  const handleUpdate = async () => {
+    if (!editingMember) return;
 
-  // ✅ Auto-hide success alert
-  function Alert() {
-    useEffect(() => {
-      if (message) {
-        const timer = setTimeout(() => setMessage(""), 3000);
-        return () => clearTimeout(timer);
+    try {
+      const formData = new FormData();
+      formData.append("full_name", editingMember.full_name);
+      formData.append("profession", editingMember.profession);
+
+      if (editingMember.newPicture) {
+        formData.append("picture", editingMember.newPicture);
       }
-    }, []);
 
-    return message ? (
-      <div
-        className="alert alert-success text-center position-fixed top-50 start-50 translate-middle"
-        role="alert"
-        style={{ zIndex: 1050, minWidth: "250px" }}
-      >
-        {message}
-      </div>
-    ) : null;
-  }
+      const res = await axios.put(
+        `${apiurl}/api/Team/edit/${editingMember._id}`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
 
-  // ✅ Buttons for each member
-  function MemberButton({ memberId }: { memberId?: string }) {
-    return (
-      <div className="d-flex gap-2 mt-2 justify-content-center">
-        <button
-          onClick={() => {
-            const member = members.find((m) => m._id === memberId);
-            if (member) handleEdit(member);
-          }}
-          className="btn btn-sm btn-outline-warning"
-        >
-          Edit
-        </button>
-        <button
-          onClick={() => memberId && handleDelete(memberId)}
-          className="btn btn-sm btn-outline-danger"
-        >
-          Delete
-        </button>
-      </div>
-    );
-  }
+      setMessage(res.data.message);
+      setEditingMember(null);
+      fetchMembers();
+    } catch (err) {
+      console.error("Error updating member:", err);
+      setMessage("Error updating member");
+    }
+  };
 
+  // -----------------------------
+  // DELETE MEMBER
+  // -----------------------------
+  const handleDelete = async (memberId: string) => {
+    try {
+      const res = await axios.delete(`${apiurl}/api/Team/delete/${memberId}`);
+      setMessage(res.data.message);
+      fetchMembers();
+    } catch {
+      setMessage("Error deleting member");
+    }
+  };
+
+  // -----------------------------
+  // ALERT
+  // -----------------------------
+  useEffect(() => {
+    if (!message) return;
+    const timer = setTimeout(() => setMessage(""), 2500);
+    return () => clearTimeout(timer);
+  }, [message]);
+
+  // -----------------------------
+  // RENDER
+  // -----------------------------
   return (
     <section className="p-4">
-      <Alert />
+      {/* ALERT */}
+      {message && (
+        <div
+          className="alert alert-success text-center position-fixed top-50 start-50 translate-middle"
+          role="alert"
+          style={{ zIndex: 9999, minWidth: "250px" }}
+        >
+          {message}
+        </div>
+      )}
 
+      {/* BREADCRUMB */}
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb mb-4">
-          <li className="breadcrumb-item">
-            <a href="#">Dashboard</a>
-          </li>
-          <li className="breadcrumb-item active" aria-current="page">
-            Settings
-          </li>
+          <li className="breadcrumb-item"><a>Dashboard</a></li>
+          <li className="breadcrumb-item active">Settings</li>
         </ol>
       </nav>
 
+      {/* TEAM MEMBERS LIST */}
       <div className="card shadow-sm p-4 form-card">
         <h5 className="text-primary mb-3 fw-semibold">Team Members</h5>
-
-        {/* ✅ Display all members */}
         <div className="row">
-          
-         {members.length == 0?
-         <>
-         <div className="alert alert-warning">
-          Loading
-         </div>
-         </>
-        :
-
-        <> {members.map((member) => (
-            <div key={member._id} className="col-md-4 mb-3">
-              <div className="card shadow-sm p-3 text-center">
-                {member.picture && (
-                  <img
-                    src={`${apiurl}/imgTeam/${member.picture}`}
-                    alt={member.full_name}
-                    className="team-img mb-3 rounded-circle"
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      objectFit: "cover",
-                      margin: "0 auto",
-                    }}
-                  />
-                )}
-                <h6 className="fw-semibold">{member.full_name}</h6>
-                <p className="text-muted mb-2">{member.profession}</p>
-                <MemberButton memberId={member._id} />
+          {members.length === 0 ? (
+            <div className="alert alert-warning">Loading...</div>
+          ) : (
+            members.map((member) => (
+              <div key={member._id} className="col-md-4 mb-3">
+                <div className="card shadow-sm p-3 text-center">
+                  {member.picture && (
+                    <img
+                      src={`${apiurl}/imgTeam/${member.picture}`}
+                      alt={member.full_name}
+                      className="rounded-circle mb-3"
+                      style={{ width: "100px", height: "100px", objectFit: "cover" }}
+                    />
+                  )}
+                  <h6 className="fw-semibold">{member.full_name}</h6>
+                  <p className="text-muted">{member.profession}</p>
+                  <div className="d-flex gap-2 mt-2 justify-content-center">
+                    <button
+                      className="btn btn-sm btn-outline-warning"
+                      onClick={() => handleEdit(member)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn btn-sm btn-outline-danger"
+                      onClick={() => handleDelete(member._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}</>
-        
-        }
-
-
-
+            ))
+          )}
         </div>
 
-        {/* ✅ Edit Member Form */}
+        {/* EDIT FORM */}
         {editingMember && (
           <div className="card shadow p-4 mt-4">
             <h5>Edit Member</h5>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                handleUpdateWithImage();
+                handleUpdate();
               }}
             >
-              {/* Name & Profession */}
               <input
                 type="text"
                 className="form-control mb-2"
@@ -211,51 +197,36 @@ function fetchMembers() {
                 placeholder="Profession"
               />
 
-              {/* Image Preview */}
-              <div className="mb-2 text-center">
+              {/* IMAGE PREVIEW */}
+              <div className="text-center mb-3">
                 {editingMember.newPicture ? (
                   <img
                     src={URL.createObjectURL(editingMember.newPicture)}
                     alt="Preview"
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      objectFit: "cover",
-                      borderRadius: "50%",
-                    }}
+                    style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%" }}
                   />
                 ) : editingMember.picture ? (
                   <img
                     src={`${apiurl}/imgTeam/${editingMember.picture}`}
-                    alt={editingMember.full_name}
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      objectFit: "cover",
-                      borderRadius: "50%",
-                    }}
+                    alt="Preview"
+                    style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%" }}
                   />
                 ) : null}
               </div>
 
-              {/* File Input */}
+              {/* FILE INPUT */}
               <input
                 type="file"
                 className="form-control mb-3"
                 accept="image/*"
                 onChange={(e) => {
-                  if (e.target.files && e.target.files[0]) {
-                    setEditingMember({
-                      ...editingMember,
-                      newPicture: e.target.files[0],
-                    });
+                  if (e.target.files?.[0]) {
+                    setEditingMember({ ...editingMember, newPicture: e.target.files[0] });
                   }
                 }}
               />
 
-              <button type="submit" className="btn btn-success">
-                Save Changes
-              </button>
+              <button type="submit" className="btn btn-success">Save Changes</button>
               <button
                 type="button"
                 className="btn btn-secondary ms-2"
