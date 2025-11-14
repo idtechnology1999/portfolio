@@ -142,7 +142,20 @@ export default function CourseSettings() {
 
         {/* ✅ Display all courses */}
         <div className="row">
-          {courses.map((course) => (
+
+        {courses.length == 0? 
+        
+        <>
+        <div className="alert alert-warning">
+          Loading...............
+        </div>
+        </>
+      
+      :
+      
+      
+      <>
+        {courses.map((course) => (
             <div key={course._id} className="col-md-4 mb-3">
               <div className="card shadow-sm p-3 text-center">
                 {course.image && (
@@ -164,6 +177,8 @@ export default function CourseSettings() {
               </div>
             </div>
           ))}
+      </>}
+
         </div>
 
         {/* ✅ Edit Course Form */}

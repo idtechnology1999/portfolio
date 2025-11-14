@@ -17,15 +17,26 @@ interface Team {
 export default function Team() {
 const [members, setmembers] = useState<Team[]>([])
 
-useEffect(()=>{
-axios.get(`${apiurl}/api/Team/Fetch`)
-.then((response)=>setmembers(response.data.message))
-.catch((error)=>{
-  setmembers([])
-  console.log("error occur",error)
-}
-)
-},[])
+useEffect(() => {
+  if (!apiurl) return console.error("API URL missing");
+
+  axios
+    .get(`${apiurl}/api/Team/Fetch`)
+    .then((res) => {
+      const data = res.data?.message;
+      if (Array.isArray(data)) {
+        setmembers(data);
+      } else {
+        console.warn("Unexpected response:", res.data);
+        setmembers([]);
+      }
+    })
+    .catch((err) => {
+      console.error("Unable to fetch team:", err);
+      setmembers([]);
+    });
+}, []);
+
 
 
   return (

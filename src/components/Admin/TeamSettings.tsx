@@ -143,7 +143,16 @@ export default function Settings() {
 
         {/* ✅ Display all members */}
         <div className="row">
-          {members.map((member) => (
+          
+         {members.length == 0?
+         <>
+         <div className="alert alert-warning">
+          Loading
+         </div>
+         </>
+        :
+
+        <> {members.map((member) => (
             <div key={member._id} className="col-md-4 mb-3">
               <div className="card shadow-sm p-3 text-center">
                 {member.picture && (
@@ -164,7 +173,12 @@ export default function Settings() {
                 <MemberButton memberId={member._id} />
               </div>
             </div>
-          ))}
+          ))}</>
+        
+        }
+
+
+
         </div>
 
         {/* ✅ Edit Member Form */}
