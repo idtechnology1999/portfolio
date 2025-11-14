@@ -86,6 +86,34 @@ background-image: url("../assets/images/backgroundimage.png");  background-repea
 
 
 
+/* Ensure the hero image never exceeds its container */
+.hero-image {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Optional: for small screens, reduce the height */
+@media (max-width: 768px) {
+  #hero {
+    padding-top: 60px; /* push content down a bit */
+  }
+
+  .hero-text h1 {
+    font-size: 2rem;
+  }
+
+  .hero-text h3 {
+    font-size: 1.4rem;
+  }
+
+  .hero-image {
+    max-height: 300px; /* prevents it from cutting off header */
+    object-fit: contain;
+  }
+}
+
+
+
 
 
 

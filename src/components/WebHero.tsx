@@ -74,7 +74,11 @@ export default function Hero() {
             data-aos="fade-left"
             data-aos-delay="400"
           >
-            <img src={companyImage} alt="ID TECH Real World Innovations" className="img-fluid" />
+<img
+  src={companyImage}
+  alt="ID TECH Real World Innovations"
+  className="img-fluid hero-image"
+/>
           </div>
 
           {/* Company Text */}
