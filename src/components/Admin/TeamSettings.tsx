@@ -22,17 +22,17 @@ export default function Settings() {
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [editingMember, setEditingMember] = useState<EditingMember | null>(null);
 
-  // ✅ Fetch members on load
-  useEffect(() => {
-    fetchMembers();
-  }, []);
+// ✅ Fetch members on load
+useEffect(() => {
+  fetchMembers();
+}, []);
 
-  function fetchMembers() {
-    axios
-      .get<{ message: TeamMember[] }>(`${apiurl}/api/Team/Fetch`)
-      .then((res) => setMembers(res.data.message))
-      .catch((err) => console.error("Error fetching members:", err));
-  }
+function fetchMembers() {
+  axios
+    .get<TeamMember[]>(`${apiurl}/api/Team/Fetch`) // <-- directly an array
+    .then((res) => setMembers(res.data))           // <-- no .message
+    .catch((err) => console.error("Error fetching members:", err));
+}
 
   // ✅ Edit member
   function handleEdit(member: TeamMember) {

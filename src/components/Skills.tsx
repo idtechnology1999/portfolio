@@ -10,8 +10,8 @@ interface data{
 export default function Skills() {
 const [skills, setskills] = useState<data[]>([])
 useEffect(()=>{
-  axios.get(`${apiurl}/api/Course/fetch`).
-  then((response)=>setskills(response.data.message))
+  axios.get(`${apiurl}/api/Course/Fetch`).
+  then((response)=>setskills(response.data))
   .catch((error)=>{
     console.log("unable to fetch, error occur", error)
     setskills([])

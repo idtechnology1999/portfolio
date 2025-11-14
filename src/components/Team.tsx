@@ -18,14 +18,16 @@ export default function Team() {
 const [members, setmembers] = useState<Team[]>([])
 
 useEffect(() => {
-  if (!apiurl) return console.error("API URL missing");
+  if (!apiurl) {
+    console.error("API URL missing");
+    return;
+  }
 
   axios
     .get(`${apiurl}/api/Team/Fetch`)
     .then((res) => {
-      const data = res.data?.message;
-      if (Array.isArray(data)) {
-        setmembers(data);
+      if (Array.isArray(res.data)) {
+        setmembers(res.data);  // <-- clean + correct
       } else {
         console.warn("Unexpected response:", res.data);
         setmembers([]);
@@ -36,6 +38,7 @@ useEffect(() => {
       setmembers([]);
     });
 }, []);
+
 
 
 

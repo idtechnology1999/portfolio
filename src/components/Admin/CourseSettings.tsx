@@ -21,17 +21,18 @@ export default function CourseSettings() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [editingCourse, setEditingCourse] = useState<EditingCourse | null>(null);
 
-  // ✅ Fetch courses on load
-  useEffect(() => {
-    fetchCourses();
-  }, []);
+// ✅ Fetch courses on load
+useEffect(() => {
+  fetchCourses();
+}, []);
 
-  function fetchCourses() {
-    axios
-      .get<{ message: Course[] }>(`${apiurl}/api/Course/fetch`)
-      .then((res) => setCourses(res.data.message))
-      .catch((err) => console.error("Error fetching courses:", err));
-  }
+function fetchCourses() {
+  axios
+    .get<Course[]>(`${apiurl}/api/Course/fetch`) // <-- directly an array
+    .then((res) => setCourses(res.data))         // <-- no .message
+    .catch((err) => console.error("Error fetching courses:", err));
+}
+
 
   // ✅ Edit course
   function handleEdit(course: Course) {
