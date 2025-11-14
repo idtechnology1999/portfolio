@@ -23,7 +23,7 @@ useEffect(()=>{
   return (
     <section id="skills" className="skills-section text-center py-5">
       <div className="container">
-        <h2 className="section-title mb-3">Skills & Expertise make changes now</h2>
+        <h2 className="section-title mb-3">Skills & Expertise</h2>
         <p className="section-desc mx-auto mb-5">
           I’m a passionate <strong>Website and Mobile App Developer</strong> with
           a strong foundation in <strong>Computer Engineering</strong>. I
