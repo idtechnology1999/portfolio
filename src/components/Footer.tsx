@@ -38,7 +38,11 @@ export default function Footer() {
               <i className="bi bi-envelope me-2"></i> idtechrealworldinnovations@gmail.com
             </p>
             <p className="footer-text mb-2">
-              <i className="bi bi-geo-alt me-2"></i> Ikorodu, Lagos state
+              <i className="bi bi-geo-alt me-2"></i>Moniya, Ibadan.
+            </p>
+
+            <p className="footer-text mb-2">
+              <i className="bi bi-geo-alt me-2"></i>Ikorodu, Lagos state
             </p>
 
             <div className="social-icons mt-3">
