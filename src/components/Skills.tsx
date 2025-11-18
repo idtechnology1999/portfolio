@@ -23,13 +23,10 @@ useEffect(()=>{
   return (
     <section id="skills" className="skills-section text-center py-5">
       <div className="container">
-        <h2 className="section-title mb-3">Skills & Expertise</h2>
-        <p className="section-desc mx-auto mb-5">
-          I’m a passionate <strong>Website and Mobile App Developer</strong> with
-          a strong foundation in <strong>Computer Engineering</strong>. I
-          specialize in building responsive, user-friendly, and high-performing
-          digital solutions that bring ideas to life.
-        </p>
+<h2 className="section-title mb-3">Skills & Expertise</h2>
+<p className="section-desc mx-auto mb-5">
+  We are a global team dedicated to end-to-end Digital Solution Development. Leveraging deep expertise in Computer Engineering and Science, we deliver innovative, high-performance, and user-centric systems for clients worldwide.
+</p>
 
         <div className="row g-4">
         {skills.length == 0 ?
