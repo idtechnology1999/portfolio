@@ -15,7 +15,6 @@ export default function Footer() {
               experiences.
             </p>
           </div>
-
           {/* Quick Links */}
           <div className="col-lg-3 col-md-6">
             <h5 className="footer-title mb-3">Quick Links</h5>
