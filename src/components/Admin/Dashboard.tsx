@@ -4,11 +4,12 @@ import SkillsPage from "./SkillsPage";
 import TeamPage from "./TeamPage";
 import TeamSettings from "./TeamSettings";
 import CourseSettings from "./CourseSettings";
+import Registration from "./mobileApp/Registration"
 
 export default function Dashboard() {
   const [collapsed, setCollapsed] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false); // submenu toggle
-
+ const [mobileOpen, setmobileOpen] = useState(false); // submenu toggle
   return (
     <div className="dashboard-container">
 
@@ -99,6 +100,25 @@ export default function Dashboard() {
               </div>
             )}
           </li>
+      {/* Mobile App */}
+   <li>
+            <div
+              className="nav-link d-flex align-items-center gap-3"
+              style={{ cursor: "pointer" }}
+              onClick={() => setmobileOpen(!mobileOpen)}
+            >
+              <i className="bi bi-gear fs-5"></i> <span>Mobile App</span>
+              <i className={`bi ms-auto bi-chevron-${mobileOpen ? "down" : "right"}`}></i>
+            </div>
+            {mobileOpen && (
+              <div className="submenu">
+                <NavLink to="/Admin/Registration" className="nav-link">User Registration</NavLink>
+                <NavLink to="/Admin/CourseSettings" className="nav-link">Course Settings</NavLink>
+              </div>
+            )}
+          </li>
+
+
         </ul>
       </div>
 
@@ -110,6 +130,9 @@ export default function Dashboard() {
           <Route path="team" element={<TeamPage />} />
           <Route path="TeamSettings" element={<TeamSettings />} /> {/* Team Settings */}
           <Route path="CourseSettings" element={<CourseSettings />} />
+
+          {/* mobile App */}
+          <Route path="Registration" element={<Registration/>} />
         </Routes>
       </div>
     </div>
