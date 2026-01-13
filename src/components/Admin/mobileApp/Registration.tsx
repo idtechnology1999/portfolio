@@ -15,17 +15,13 @@ interface User {
 }
 
 export default function CreateUserWithTable() {
-  // Form state
   const [fullName, setFullName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [course, setCourse] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [testing, SetTesting] = useState("");
 
-  // Users from database
   const [users, setUsers] = useState<User[]>([]);
-
-  // Table search & pagination
   const [search, setSearch] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 5;
@@ -34,7 +30,7 @@ export default function CreateUserWithTable() {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(`${apiurl}/api/MobileApp/Fetch`);
-      setUsers(response.data); // load users from DB
+      setUsers(response.data);
     } catch (error) {
       console.error(error);
       alert("Error fetching users from API");
@@ -45,7 +41,6 @@ export default function CreateUserWithTable() {
     fetchUsers();
   }, []);
 
-  // Handle form submission: send to API only
   const handleCreate = async () => {
     if (!fullName || !email || !course || !amount) {
       alert("Please fill all fields");
@@ -64,28 +59,36 @@ export default function CreateUserWithTable() {
 
     try {
       const response = await axios.post(`${apiurl}/api/MobileApp/Register`, newUser);
-
       SetTesting(response.data.message);
       alert(response.data.message);
 
       if (response.data.success) {
-        // Clear form fields
         setFullName("");
         setEmail("");
         setCourse("");
         setAmount("");
-
-        // Refresh the table from DB
         fetchUsers();
       }
-
     } catch (error) {
       console.error(error);
       alert("Error sending data to API.");
     }
   };
 
-  // Filter users for search
+  // Delete user
+  const handleDelete = async (email: string) => {
+    if (!confirm("Are you sure you want to delete this user?")) return;
+
+    try {
+      const response = await axios.delete(`${apiurl}/api/MobileApp/Delete/${email}`);
+      alert(response.data.message || "User deleted successfully");
+      fetchUsers();
+    } catch (error) {
+      console.error(error);
+      alert("Error deleting user.");
+    }
+  };
+
   const filteredUsers = users.filter(u =>
     u.fullName.toLowerCase().includes(search.toLowerCase())
   );
@@ -98,7 +101,6 @@ export default function CreateUserWithTable() {
 
   return (
     <div className="form-container">
-      {/* Breadcrumb */}
       <nav aria-label="breadcrumb" className="breadcrumb">
         <ol>
           <li><a href="#">Dashboard</a></li>
@@ -106,7 +108,6 @@ export default function CreateUserWithTable() {
         </ol>
       </nav>
 
-      {/* Form */}
       <div className="form-card">
         <h2>Create New User</h2>
         <div className="form-row">
@@ -134,7 +135,10 @@ export default function CreateUserWithTable() {
             <label>Course</label>
             <select value={course} onChange={(e) => setCourse(e.target.value)}>
               <option value="">Select a course</option>
-              <option value="Web-Development">Web Development</option>
+              <option value="Website Design">Website Design</option>
+              <option value="Backend Design">Backend Design</option>
+              <option value="Mobile App">Mobile App</option>
+              <option value="IT Fundamental">IT Fundamental</option>
               <option value="UI/UX Design">UI/UX Design</option>
               <option value="Cybersecurity">Cybersecurity</option>
               <option value="Data Analysis">Data Analysis</option>
@@ -160,7 +164,7 @@ export default function CreateUserWithTable() {
         </div>
       </div>
 
-      {/* Table */}
+      {/* User Table */}
       <div className="table-container">
         <h3>User List</h3>
 
@@ -186,6 +190,7 @@ export default function CreateUserWithTable() {
               <th>Duration</th>
               <th>Certificate</th>
               <th>Status</th>
+              <th>Action</th> {/* Delete Button */}
             </tr>
           </thead>
 
@@ -201,11 +206,21 @@ export default function CreateUserWithTable() {
                   <td>{user.duration}</td>
                   <td>{user.certificate}</td>
                   <td>{user.status}</td>
+                <td>
+  <button
+    className="btn btn-danger btn-sm"
+    onClick={() => handleDelete(user.email)}
+    title="Delete User"
+  >
+    <i className="bi bi-trash"></i>
+  </button>
+</td>
+
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={8} style={{ textAlign: "center" }}>
+                <td colSpan={9} style={{ textAlign: "center" }}>
                   No users found
                 </td>
               </tr>
@@ -213,7 +228,6 @@ export default function CreateUserWithTable() {
           </tbody>
         </table>
 
-        {/* Pagination */}
         {totalPages > 1 && (
           <div className="pagination">
             <button
