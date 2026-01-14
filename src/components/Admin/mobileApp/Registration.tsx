@@ -60,6 +60,7 @@ export default function CreateUserWithTable() {
     try {
       const response = await axios.post(`${apiurl}/api/MobileApp/Register`, newUser);
       SetTesting(response.data.message);
+      console.log(testing)
       alert(response.data.message);
 
       if (response.data.success) {
