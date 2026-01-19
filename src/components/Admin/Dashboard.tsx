@@ -5,6 +5,7 @@ import TeamPage from "./TeamPage";
 import TeamSettings from "./TeamSettings";
 import CourseSettings from "./CourseSettings";
 import Registration from "./mobileApp/Registration"
+import UploadVideo from "./mobileApp/UploadVideo"
 
 export default function Dashboard() {
   const [collapsed, setCollapsed] = useState(false);
@@ -113,7 +114,7 @@ export default function Dashboard() {
             {mobileOpen && (
               <div className="submenu">
                 <NavLink to="/Admin/Registration" className="nav-link">User Registration</NavLink>
-                <NavLink to="/Admin/CourseSettings" className="nav-link">Course Settings</NavLink>
+                <NavLink to="/Admin/UploadVideo" className="nav-link">Upload Video</NavLink>
               </div>
             )}
           </li>
@@ -133,6 +134,8 @@ export default function Dashboard() {
 
           {/* mobile App */}
           <Route path="Registration" element={<Registration/>} />
+          <Route path="UploadVideo" element={<UploadVideo/>} />
+
         </Routes>
       </div>
     </div>
