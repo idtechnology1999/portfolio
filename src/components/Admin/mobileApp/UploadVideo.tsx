@@ -2,6 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import './UploadVideo.css';
 import axios from 'axios';
 
+// API URL - Update this to your backend URL
+const API_URL = import.meta.env.VITE_API_BASE_URL;
+
 interface Video {
   id: string;
   title: string;
@@ -28,13 +31,11 @@ export default function UploadVideo() {
   const [previewUrl, setPreviewUrl] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [filterCourse, setFilterCourse] = useState('');
+  const [playingVideo, setPlayingVideo] = useState<Video | null>(null); // ✅ Added for video player
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const videosPerPage = 8;
-
-  // API URL - Update this to your backend URL
-  const API_URL = 'http://localhost:3000'; // Change to your server IP for production
 
   // Fetch videos from backend
   useEffect(() => {
@@ -60,7 +61,7 @@ export default function UploadVideo() {
           fileName: video.fileName,
           fileSize: video.fileSize,
           uploadDate: new Date(video.uploadDate).toLocaleDateString(),
-          thumbnailUrl: `${API_URL}/videos/${video.videoUrl}`,
+          thumbnailUrl: video.videoUrl,
           views: video.views || 0,
         }));
         setVideos(formattedVideos);
@@ -77,7 +78,6 @@ export default function UploadVideo() {
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file && file.type.startsWith('video/')) {
-      // Check file size (500MB limit)
       if (file.size > 500 * 1024 * 1024) {
         alert('File size exceeds 500MB limit');
         return;
@@ -87,7 +87,6 @@ export default function UploadVideo() {
       const url = URL.createObjectURL(file);
       setPreviewUrl(url);
       
-      // Get video duration
       const video = document.createElement('video');
       video.preload = 'metadata';
       video.onloadedmetadata = () => {
@@ -103,7 +102,6 @@ export default function UploadVideo() {
     }
   };
 
-  // Handle drag and drop
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
@@ -117,7 +115,6 @@ export default function UploadVideo() {
       const url = URL.createObjectURL(file);
       setPreviewUrl(url);
       
-      // Get video duration
       const video = document.createElement('video');
       video.preload = 'metadata';
       video.onloadedmetadata = () => {
@@ -135,7 +132,6 @@ export default function UploadVideo() {
     e.preventDefault();
   };
 
-  // Handle upload
   const handleUpload = async () => {
     if (!selectedFile || !course || !title || !description) {
       alert('Please fill all fields and select a video');
@@ -145,7 +141,6 @@ export default function UploadVideo() {
     setUploading(true);
     setUploadProgress(0);
 
-    // Create FormData
     const formData = new FormData();
     formData.append('video', selectedFile);
     formData.append('title', title);
@@ -154,7 +149,6 @@ export default function UploadVideo() {
     formData.append('duration', videoDuration);
 
     try {
-      // Upload with progress tracking
       const response = await axios.post(
         `${API_URL}/api/Video/upload-video`,
         formData,
@@ -173,11 +167,8 @@ export default function UploadVideo() {
 
       if (response.data.success) {
         alert('Video uploaded successfully!');
-        
-        // Refresh videos list
         await fetchVideos();
         
-        // Reset form
         setSelectedFile(null);
         setTitle('');
         setCourse('');
@@ -203,7 +194,6 @@ export default function UploadVideo() {
     }
   };
 
-  // Delete video
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this video?')) {
       try {
@@ -224,13 +214,10 @@ export default function UploadVideo() {
     }
   };
 
-  // Handle edit (you can implement this later)
   const handleEdit = (video: Video) => {
-    // Set form fields with video data
     setTitle(video.title);
     setCourse(video.course);
     setDescription(video.description);
-    // Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
     alert('Edit mode activated. Modify the fields and upload again.');
   };
@@ -256,7 +243,6 @@ export default function UploadVideo() {
       {/* Upload Form */}
       <div className="upload-section">
         <div className="upload-grid">
-          {/* Left Side - File Upload */}
           <div className="upload-left">
             <div
               className="file-upload-area"
@@ -271,6 +257,8 @@ export default function UploadVideo() {
                     src={previewUrl}
                     controls
                     className="video-preview"
+                    preload="metadata"
+                    playsInline
                   />
                   <div className="preview-info">
                     <p className="file-name">{selectedFile?.name}</p>
@@ -308,7 +296,6 @@ export default function UploadVideo() {
             </div>
           </div>
 
-          {/* Right Side - Form Fields */}
           <div className="upload-right">
             <div className="form-group">
               <label>Video Title *</label>
@@ -424,16 +411,25 @@ export default function UploadVideo() {
                   <video 
                     src={video.thumbnailUrl} 
                     className="thumbnail-video"
-                    onMouseEnter={(e) => e.currentTarget.play()}
+                    preload="metadata"
+                    playsInline
+                    muted
+                    loop
+                    onMouseEnter={(e) => {
+                      e.currentTarget.play().catch(err => console.log('Play failed:', err));
+                    }}
                     onMouseLeave={(e) => {
                       e.currentTarget.pause();
                       e.currentTarget.currentTime = 0;
                     }}
-                    muted
                   />
                   <div className="video-duration-badge">{video.duration}</div>
+                  {/* ✅ UPDATED: Play button now opens video player */}
                   <div className="video-overlay">
-                    <button className="play-btn">
+                    <button 
+                      className="play-btn"
+                      onClick={() => setPlayingVideo(video)}
+                    >
                       <svg viewBox="0 0 24 24" fill="currentColor">
                         <path d="M8 5v14l11-7z" />
                       </svg>
@@ -535,6 +531,102 @@ export default function UploadVideo() {
           </div>
         )}
       </div>
+
+      {/* ✅ VIDEO PLAYER MODAL */}
+      {playingVideo && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.95)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            padding: '20px',
+          }}
+          onClick={() => setPlayingVideo(null)}
+        >
+          <div 
+            style={{
+              maxWidth: '1200px',
+              width: '100%',
+              position: 'relative',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setPlayingVideo(null)}
+              style={{
+                position: 'absolute',
+                top: '-50px',
+                right: '0',
+                background: 'white',
+                border: 'none',
+                borderRadius: '50%',
+                width: '40px',
+                height: '40px',
+                cursor: 'pointer',
+                fontSize: '24px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 'bold',
+              }}
+            >
+              ×
+            </button>
+
+            {/* Video Player */}
+            <video
+              src={playingVideo.thumbnailUrl}
+              controls
+              autoPlay
+              style={{
+                width: '100%',
+                maxHeight: '80vh',
+                borderRadius: '8px',
+              }}
+              preload="metadata"
+              playsInline
+            />
+
+            {/* Video Info */}
+            <div style={{ 
+              color: 'white', 
+              marginTop: '20px',
+              padding: '0 10px',
+            }}>
+              <h2 style={{ margin: '0 0 10px 0' }}>{playingVideo.title}</h2>
+              <p style={{ 
+                color: '#aaa', 
+                margin: '0 0 10px 0',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '15px',
+              }}>
+                <span style={{
+                  backgroundColor: '#3b82f6',
+                  padding: '4px 12px',
+                  borderRadius: '4px',
+                  fontSize: '14px',
+                }}>
+                  {playingVideo.course}
+                </span>
+                <span>Duration: {playingVideo.duration}</span>
+                <span>{playingVideo.views} views</span>
+              </p>
+              <p style={{ color: '#ccc', lineHeight: '1.6' }}>
+                {playingVideo.description}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

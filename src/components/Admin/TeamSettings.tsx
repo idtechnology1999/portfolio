@@ -140,7 +140,7 @@ export default function Settings() {
                 <div className="card shadow-sm p-3 text-center">
                   {member.picture && (
                     <img
-                      src={`${apiurl}/imgTeam/${member.picture}`}
+                      src={member.picture}  // ✅ FIXED: Direct Cloudinary URL
                       alt={member.full_name}
                       className="rounded-circle mb-3"
                       style={{ width: "100px", height: "100px", objectFit: "cover" }}
@@ -207,7 +207,7 @@ export default function Settings() {
                   />
                 ) : editingMember.picture ? (
                   <img
-                    src={`${apiurl}/imgTeam/${editingMember.picture}`}
+                    src={editingMember.picture}  // ✅ FIXED: Direct Cloudinary URL
                     alt="Preview"
                     style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%" }}
                   />

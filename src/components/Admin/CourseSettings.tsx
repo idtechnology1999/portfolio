@@ -21,18 +21,17 @@ export default function CourseSettings() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [editingCourse, setEditingCourse] = useState<EditingCourse | null>(null);
 
-// ✅ Fetch courses on load
-useEffect(() => {
-  fetchCourses();
-}, []);
+  // ✅ Fetch courses on load
+  useEffect(() => {
+    fetchCourses();
+  }, []);
 
-function fetchCourses() {
-  axios
-    .get<Course[]>(`${apiurl}/api/Course/fetch`) // <-- directly an array
-    .then((res) => setCourses(res.data))         // <-- no .message
-    .catch((err) => console.error("Error fetching courses:", err));
-}
-
+  function fetchCourses() {
+    axios
+      .get<Course[]>(`${apiurl}/api/Course/fetch`)
+      .then((res) => setCourses(res.data))
+      .catch((err) => console.error("Error fetching courses:", err));
+  }
 
   // ✅ Edit course
   function handleEdit(course: Course) {
@@ -143,43 +142,32 @@ function fetchCourses() {
 
         {/* ✅ Display all courses */}
         <div className="row">
-
-        {courses.length == 0? 
-        
-        <>
-        <div className="alert alert-warning">
-          Loading...............
-        </div>
-        </>
-      
-      :
-      
-      
-      <>
-        {courses.map((course) => (
-            <div key={course._id} className="col-md-4 mb-3">
-              <div className="card shadow-sm p-3 text-center">
-                {course.image && (
-                  <img
-                    src={`${apiurl}/imgCourse/${course.image}`}
-                    alt={course.title}
-                    className="course-img mb-3 rounded"
-                    style={{
-                      width: "100%",
-                      height: "150px",
-                      objectFit: "cover",
-                      margin: "0 auto",
-                    }}
-                  />
-                )}
-                <h6 className="fw-semibold">{course.title}</h6>
-                <p className="text-muted mb-2">{course.Description}</p>
-                <CourseButton courseId={course._id} />
+          {courses.length === 0 ? (
+            <div className="alert alert-warning">Loading...............</div>
+          ) : (
+            courses.map((course) => (
+              <div key={course._id} className="col-md-4 mb-3">
+                <div className="card shadow-sm p-3 text-center">
+                  {course.image && (
+                    <img
+                      src={course.image}  // ✅ FIXED: Direct Cloudinary URL
+                      alt={course.title}
+                      className="course-img mb-3 rounded"
+                      style={{
+                        width: "100%",
+                        height: "150px",
+                        objectFit: "cover",
+                        margin: "0 auto",
+                      }}
+                    />
+                  )}
+                  <h6 className="fw-semibold">{course.title}</h6>
+                  <p className="text-muted mb-2">{course.Description}</p>
+                  <CourseButton courseId={course._id} />
+                </div>
               </div>
-            </div>
-          ))}
-      </>}
-
+            ))
+          )}
         </div>
 
         {/* ✅ Edit Course Form */}
@@ -226,7 +214,7 @@ function fetchCourses() {
                   />
                 ) : editingCourse.image ? (
                   <img
-                    src={`${apiurl}/imgCourse/${editingCourse.image}`}
+                    src={editingCourse.image}  // ✅ FIXED: Direct Cloudinary URL
                     alt={editingCourse.title}
                     style={{
                       width: "150px",

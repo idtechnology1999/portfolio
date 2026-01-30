@@ -8,47 +8,45 @@ interface data{
   Description: string
 }
 export default function Skills() {
-const [skills, setskills] = useState<data[]>([])
-useEffect(()=>{
-  axios.get(`${apiurl}/api/Course/Fetch`).
-  then((response)=>setskills(response.data))
-  .catch((error)=>{
-    console.log("unable to fetch, error occur", error)
-    setskills([])
-  })
-},[])
-
-
+  const [skills, setskills] = useState<data[]>([])
+  
+  useEffect(()=>{
+    axios.get(`${apiurl}/api/Course/Fetch`)
+    .then((response)=>setskills(response.data))
+    .catch((error)=>{
+      console.log("unable to fetch, error occur", error)
+      setskills([])
+    })
+  },[])
 
   return (
     <section id="skills" className="skills-section text-center py-5">
       <div className="container">
-<h2 className="section-title mb-3">Skills & Expertise</h2>
-<p className="section-desc mx-auto mb-5">
-  We are a global team dedicated to end-to-end Digital Solution Development. Leveraging deep expertise in Computer Engineering and Science, we deliver innovative, high-performance, and user-centric systems for clients worldwide.
-</p>
+        <h2 className="section-title mb-3">Skills & Expertise</h2>
+        <p className="section-desc mx-auto mb-5">
+          We are a global team dedicated to end-to-end Digital Solution Development.
+        </p>
 
         <div className="row g-4">
-        {skills.length == 0 ?
-         <>
-              <div className="alert alert-warning text-center mt-4" role="alert">
-            <strong>Loading ....... </strong>
-          </div>
-         </>
-         :
-         <>    {skills.map((skill, index) => (
-            <div className="col-md-4 col-sm-6" key={index}>
-              <div className="skill-card shadow-sm">
-                <img
-                  src={`${apiurl}/imgCourse/${skill.image}`}
-                  alt={skill.title}
-                  className="img-fluid skill-img"
-                />
-                <h5 className="mt-3 skill-title">{skill.title}</h5>
-                <p className="skill-desc">{skill.Description}</p>
-              </div>
+          {skills.length === 0 ? (
+            <div className="alert alert-warning text-center mt-4" role="alert">
+              <strong>Loading ....... </strong>
             </div>
-          ))}</>}
+          ) : (
+            skills.map((skill, index) => (
+              <div className="col-md-4 col-sm-6" key={index}>
+                <div className="skill-card shadow-sm">
+                  <img
+                    src={skill.image} // ✅ Direct Cloudinary URL
+                    alt={skill.title}
+                    className="img-fluid skill-img"
+                  />
+                  <h5 className="mt-3 skill-title">{skill.title}</h5>
+                  <p className="skill-desc">{skill.Description}</p>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </section>

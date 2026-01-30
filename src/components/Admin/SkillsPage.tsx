@@ -31,7 +31,7 @@ export default function SkillsPage() {
 
       if (file) {
         const allowedTypes = ["image/jpeg", "image/png", "image/jpg", "image/webp"];
-        const maxSize = 30 * 1024 * 1024; // 2MB
+        const maxSize = 30 * 1024 * 1024; // 30MB
 
         if (!allowedTypes.includes(file.type)) {
           setFeedback("❌ Only image files (JPG, PNG, WEBP) are allowed!");
@@ -41,7 +41,7 @@ export default function SkillsPage() {
         }
 
         if (file.size > maxSize) {
-          setFeedback("❌ File too large! Please upload an image under 20MB.");
+          setFeedback("❌ File too large! Please upload an image under 30MB.");
           target.value = "";
           setFormData({ ...formData, image: null });
           return;
@@ -58,7 +58,7 @@ export default function SkillsPage() {
     }
   };
 
-  // ✅ Handle form submit
+  // ✅ Handle form submit (IMPROVED ERROR HANDLING)
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -80,12 +80,30 @@ export default function SkillsPage() {
 
       setFeedback(response.data.message || "✅ Skill added successfully!");
 
-      // ✅ Reset form after success
-      setFormData({ title: "", image: null, description: "" });
-      (e.target as HTMLFormElement).reset();
+      // ✅ Only reset form if successfully created
+      if (response.data.message?.toLowerCase().includes("success") || 
+          response.data.message?.toLowerCase().includes("created")) {
+        setFormData({ title: "", image: null, description: "" });
+        (e.target as HTMLFormElement).reset();
+      }
     } catch (error) {
       console.error("❌ Upload error:", error);
-      setFeedback("⚠️ Unable to connect to the API");
+      
+      // Better error handling
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          // Server responded with error status
+          setFeedback(error.response.data.message || "⚠️ Server error occurred");
+        } else if (error.request) {
+          // Request made but no response received
+          setFeedback("⚠️ Unable to connect to the API. Please check your connection.");
+        } else {
+          // Something else happened
+          setFeedback("⚠️ An unexpected error occurred");
+        }
+      } else {
+        setFeedback("⚠️ An unexpected error occurred");
+      }
     } finally {
       setLoading(false);
     }
@@ -94,7 +112,7 @@ export default function SkillsPage() {
   // ✅ Auto clear feedback
   useEffect(() => {
     if (feedback) {
-      const timer = setTimeout(() => setFeedback(""), 3000);
+      const timer = setTimeout(() => setFeedback(""), 4000);
       return () => clearTimeout(timer);
     }
   }, [feedback]);
@@ -105,7 +123,11 @@ export default function SkillsPage() {
       {feedback && (
         <div
           className={`alert ${
-            feedback.toLowerCase().includes("success") ? "alert-success" : "alert-info"
+            feedback.toLowerCase().includes("success") || feedback.toLowerCase().includes("created")
+              ? "alert-success" 
+              : feedback.toLowerCase().includes("already")
+              ? "alert-warning"
+              : "alert-danger"
           } shake-alert mt-3`}
           role="alert"
           style={{
@@ -145,6 +167,7 @@ export default function SkillsPage() {
               type="text"
               className="form-control"
               name="title"
+              value={formData.title}
               placeholder="React, Photoshop, Marketing..."
               onChange={handleChange}
               required
@@ -185,6 +208,7 @@ export default function SkillsPage() {
             <textarea
               className="form-control"
               name="description"
+              value={formData.description}
               rows={3}
               placeholder="Write a short description..."
               onChange={handleChange}
