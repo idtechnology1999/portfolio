@@ -4,8 +4,10 @@ import SkillsPage from "./SkillsPage";
 import TeamPage from "./TeamPage";
 import TeamSettings from "./TeamSettings";
 import CourseSettings from "./CourseSettings";
+import CoursePage from "./CoursePage";
 import Registration from "./mobileApp/Registration"
 import UploadVideo from "./mobileApp/UploadVideo"
+import MobileCourseSettings from "./mobileApp/MobileCourseSettings"
 
 export default function Dashboard() {
   const [collapsed, setCollapsed] = useState(false);
@@ -115,6 +117,7 @@ export default function Dashboard() {
               <div className="submenu">
                 <NavLink to="/Admin/Registration" className="nav-link">User Registration</NavLink>
                 <NavLink to="/Admin/UploadVideo" className="nav-link">Upload Video</NavLink>
+                <NavLink to="/Admin/MobileCourses" className="nav-link">Manage Courses</NavLink>
               </div>
             )}
           </li>
@@ -131,10 +134,12 @@ export default function Dashboard() {
           <Route path="team" element={<TeamPage />} />
           <Route path="TeamSettings" element={<TeamSettings />} /> {/* Team Settings */}
           <Route path="CourseSettings" element={<CourseSettings />} />
+          <Route path="CoursePage" element={<CoursePage />} />
 
           {/* mobile App */}
           <Route path="Registration" element={<Registration/>} />
           <Route path="UploadVideo" element={<UploadVideo/>} />
+          <Route path="MobileCourses" element={<MobileCourseSettings/>} />
 
         </Routes>
       </div>

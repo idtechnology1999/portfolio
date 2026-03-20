@@ -24,19 +24,9 @@ export default function Team() {
     }
 
     axios
-      .get(`${apiurl}/api/Team/Fetch`)
-      .then((res) => {
-        if (Array.isArray(res.data)) {
-          setmembers(res.data);
-        } else {
-          console.warn("Unexpected response:", res.data);
-          setmembers([]);
-        }
-      })
-      .catch((err) => {
-        console.error("Unable to fetch team:", err);
-        setmembers([]);
-      });
+      .get(`${apiurl}/api/team/all`)
+      .then((res) => setmembers(res.data.data ?? []))
+      .catch(() => setmembers([]));
   }, []);
 
   return (

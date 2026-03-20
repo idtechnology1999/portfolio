@@ -31,13 +31,19 @@ export default function UploadVideo() {
   const [previewUrl, setPreviewUrl] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [filterCourse, setFilterCourse] = useState('');
-  const [playingVideo, setPlayingVideo] = useState<Video | null>(null); // ✅ Added for video player
-  
+  const [playingVideo, setPlayingVideo] = useState<Video | null>(null);
+  const [courseOptions, setCourseOptions] = useState<string[]>([]);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const videosPerPage = 8;
 
-  // Fetch videos from backend
+  useEffect(() => {
+    axios.get(`${API_URL}/api/mobile/courses/all`)
+      .then((res) => setCourseOptions((res.data.data ?? []).map((c: any) => c.title)))
+      .catch(() => {});
+  }, []);
+
   useEffect(() => {
     fetchVideos();
   }, [filterCourse]);
@@ -46,8 +52,8 @@ export default function UploadVideo() {
     try {
       setLoading(true);
       const url = filterCourse 
-        ? `${API_URL}/api/Video/get-videos?course=${filterCourse}`
-        : `${API_URL}/api/Video/get-videos`;
+        ? `${API_URL}/api/video/all?course=${filterCourse}`
+        : `${API_URL}/api/video/all`;
       
       const response = await axios.get(url);
 
@@ -150,7 +156,7 @@ export default function UploadVideo() {
 
     try {
       const response = await axios.post(
-        `${API_URL}/api/Video/upload-video`,
+        `${API_URL}/api/video/upload`,
         formData,
         {
           headers: {
@@ -198,7 +204,7 @@ export default function UploadVideo() {
     if (window.confirm('Are you sure you want to delete this video?')) {
       try {
         const response = await axios.delete(
-          `${API_URL}/api/Video/delete-video/${id}`
+          `${API_URL}/api/video/${id}`
         );
 
         if (response.data.success) {
@@ -316,13 +322,9 @@ export default function UploadVideo() {
                 className="form-select"
               >
                 <option value="">Select a course</option>
-                <option value="Website Design">Website Design</option>
-                <option value="Backend Design">Backend Design</option>
-                <option value="Mobile App">Mobile App</option>
-                <option value="IT Fundamental">IT Fundamental</option>
-                <option value="UI/UX Design">UI/UX Design</option>
-                <option value="Cybersecurity">Cybersecurity</option>
-                <option value="Data Analysis">Data Analysis</option>
+                {courseOptions.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
               </select>
             </div>
 
@@ -384,13 +386,9 @@ export default function UploadVideo() {
               }}
             >
               <option value="">All Courses</option>
-              <option value="Website Design">Website Design</option>
-              <option value="Backend Design">Backend Design</option>
-              <option value="Mobile App">Mobile App</option>
-              <option value="IT Fundamental">IT Fundamental</option>
-              <option value="UI/UX Design">UI/UX Design</option>
-              <option value="Cybersecurity">Cybersecurity</option>
-              <option value="Data Analysis">Data Analysis</option>
+              {courseOptions.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
             </select>
           </div>
         </div>

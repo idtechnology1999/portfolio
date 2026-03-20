@@ -1,260 +1,117 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
+import "./admin.css";
+import axios from "axios";
 
 const apiurl = import.meta.env.VITE_API_BASE_URL;
 
-// ✅ Course type
-interface Course {
-  _id: string;
-  title: string;
-  Description: string;
-  image?: string;
-}
-
-// ✅ Extend for editing to include new image
-interface EditingCourse extends Course {
-  newImage?: File | null;
-}
+interface Course { _id: string; title: string; Description: string; image?: string; }
+interface Editing extends Course { newImage?: File | null; }
 
 export default function CourseSettings() {
-  const [message, setMessage] = useState<string>("");
   const [courses, setCourses] = useState<Course[]>([]);
-  const [editingCourse, setEditingCourse] = useState<EditingCourse | null>(null);
+  const [editing, setEditing] = useState<Editing | null>(null);
+  const [toast, setToast] = useState<{ msg: string; type: "success" | "danger" } | null>(null);
 
-  // ✅ Fetch courses on load
+  useEffect(() => { fetchCourses(); }, []);
   useEffect(() => {
-    fetchCourses();
-  }, []);
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 3000);
+    return () => clearTimeout(t);
+  }, [toast]);
 
-  function fetchCourses() {
-    axios
-      .get<Course[]>(`${apiurl}/api/Course/fetch`)
-      .then((res) => setCourses(res.data))
-      .catch((err) => console.error("Error fetching courses:", err));
-  }
+  const fetchCourses = () => {
+    axios.get(`${apiurl}/api/course/all`)
+      .then((res) => setCourses(res.data.data ?? []))
+      .catch(() => setToast({ msg: "Error fetching courses", type: "danger" }));
+  };
 
-  // ✅ Edit course
-  function handleEdit(course: Course) {
-    setEditingCourse(course);
-  }
+  const handleUpdate = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editing?._id) return;
+    const fd = new FormData();
+    fd.append("title", editing.title); fd.append("Description", editing.Description);
+    if (editing.newImage) fd.append("image", editing.newImage);
+    axios.put(`${apiurl}/api/course/edit/${editing._id}`, fd, { headers: { "Content-Type": "multipart/form-data" } })
+      .then((res) => { setToast({ msg: res.data.message, type: "success" }); setEditing(null); fetchCourses(); })
+      .catch(() => setToast({ msg: "Error updating course", type: "danger" }));
+  };
 
-  // ✅ Update course with optional new image
-  function handleUpdateWithImage() {
-    if (!editingCourse || !editingCourse._id) return;
-
-    const formData = new FormData();
-    formData.append("title", editingCourse.title);
-    formData.append("Description", editingCourse.Description);
-
-    if (editingCourse.newImage) {
-      formData.append("image", editingCourse.newImage);
-    }
-
-    axios
-      .put(`${apiurl}/api/Course/edit/${editingCourse._id}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((res) => {
-        setMessage(res.data.message);
-        setEditingCourse(null);
-        fetchCourses();
-      })
-      .catch((err) => {
-        console.error(err);
-        setMessage("Error updating course");
-      });
-  }
-
-  // ✅ Delete course
-  function handleDelete(courseId: string) {
-    axios
-      .delete(`${apiurl}/api/Course/delete/${courseId}`)
-      .then((res) => {
-        setMessage(res.data.message);
-        fetchCourses();
-      })
-      .catch((err) => {
-        console.error(err);
-        setMessage("Error deleting course");
-      });
-  }
-
-  // ✅ Auto-hide success alert
-  function Alert() {
-    useEffect(() => {
-      if (message) {
-        const timer = setTimeout(() => setMessage(""), 3000);
-        return () => clearTimeout(timer);
-      }
-    }, []);
-
-    return message ? (
-      <div
-        className="alert alert-success text-center position-fixed top-50 start-50 translate-middle"
-        role="alert"
-        style={{ zIndex: 1050, minWidth: "250px" }}
-      >
-        {message}
-      </div>
-    ) : null;
-  }
-
-  // ✅ Buttons for each course
-  function CourseButton({ courseId }: { courseId?: string }) {
-    return (
-      <div className="d-flex gap-2 mt-2 justify-content-center">
-        <button
-          onClick={() => {
-            const course = courses.find((c) => c._id === courseId);
-            if (course) handleEdit(course);
-          }}
-          className="btn btn-sm btn-outline-warning"
-        >
-          Edit
-        </button>
-        <button
-          onClick={() => courseId && handleDelete(courseId)}
-          className="btn btn-sm btn-outline-danger"
-        >
-          Delete
-        </button>
-      </div>
-    );
-  }
+  const handleDelete = (id: string) => {
+    if (!confirm("Delete this course?")) return;
+    axios.delete(`${apiurl}/api/course/delete/${id}`)
+      .then((res) => { setToast({ msg: res.data.message, type: "success" }); fetchCourses(); })
+      .catch(() => setToast({ msg: "Error deleting course", type: "danger" }));
+  };
 
   return (
-    <section className="p-4">
-      <Alert />
+    <div className="adm-page">
+      {toast && <div className={`adm-toast adm-toast--${toast.type}`}>{toast.msg}</div>}
+      <div className="adm-breadcrumb"><a href="#">Dashboard</a> / <span>Course Settings</span></div>
+      <div className="adm-header">
+        <h1 className="adm-title">Course Settings</h1>
+        <p className="adm-subtitle">Edit or remove website courses</p>
+      </div>
 
-      <nav aria-label="breadcrumb">
-        <ol className="breadcrumb mb-4">
-          <li className="breadcrumb-item">
-            <a href="#">Dashboard</a>
-          </li>
-          <li className="breadcrumb-item active" aria-current="page">
-            Course Settings
-          </li>
-        </ol>
-      </nav>
-
-      <div className="card shadow-sm p-4 form-card">
-        <h5 className="text-primary mb-3 fw-semibold">Courses</h5>
-
-        {/* ✅ Display all courses */}
-        <div className="row">
+      <div className="adm-card">
+        <div className="adm-card-header"><i className="bi bi-journal-text me-2"></i>Courses ({courses.length})</div>
+        <div className="adm-card-body">
           {courses.length === 0 ? (
-            <div className="alert alert-warning">Loading...............</div>
+            <div className="adm-empty"><i className="bi bi-journal-x"></i><p>No courses yet</p></div>
           ) : (
-            courses.map((course) => (
-              <div key={course._id} className="col-md-4 mb-3">
-                <div className="card shadow-sm p-3 text-center">
-                  {course.image && (
-                    <img
-                      src={course.image}  // ✅ FIXED: Direct Cloudinary URL
-                      alt={course.title}
-                      className="course-img mb-3 rounded"
-                      style={{
-                        width: "100%",
-                        height: "150px",
-                        objectFit: "cover",
-                        margin: "0 auto",
-                      }}
-                    />
-                  )}
-                  <h6 className="fw-semibold">{course.title}</h6>
-                  <p className="text-muted mb-2">{course.Description}</p>
-                  <CourseButton courseId={course._id} />
+            <div className="adm-grid adm-grid--3">
+              {courses.map((c) => (
+                <div key={c._id} className="adm-item-card">
+                  {c.image
+                    ? <img src={c.image} alt={c.title} className="adm-item-card__img" />
+                    : <div style={{ height: 150, background: "#f1f5f9", display: "flex", alignItems: "center", justifyContent: "center" }}><i className="bi bi-image" style={{ fontSize: 32, color: "#94a3b8" }}></i></div>
+                  }
+                  <div className="adm-item-card__body">
+                    <p className="adm-item-card__title">{c.title}</p>
+                    <p className="adm-item-card__sub">{c.Description}</p>
+                    <div className="adm-item-card__actions">
+                      <button className="adm-btn adm-btn--warning" style={{ padding: "6px 14px", fontSize: 13 }} onClick={() => setEditing({ ...c, newImage: null })}>
+                        <i className="bi bi-pencil"></i> Edit
+                      </button>
+                      <button className="adm-btn adm-btn--danger" style={{ padding: "6px 14px", fontSize: 13 }} onClick={() => handleDelete(c._id)}>
+                        <i className="bi bi-trash3"></i> Delete
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))
+              ))}
+            </div>
           )}
         </div>
+      </div>
 
-        {/* ✅ Edit Course Form */}
-        {editingCourse && (
-          <div className="card shadow p-4 mt-4">
-            <h5>Edit Course</h5>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleUpdateWithImage();
-              }}
-            >
-              {/* Title & Description */}
-              <input
-                type="text"
-                className="form-control mb-2"
-                value={editingCourse.title}
-                onChange={(e) =>
-                  setEditingCourse({ ...editingCourse, title: e.target.value })
-                }
-                placeholder="Course Title"
-              />
-              <textarea
-                className="form-control mb-2"
-                value={editingCourse.Description}
-                onChange={(e) =>
-                  setEditingCourse({ ...editingCourse, Description: e.target.value })
-                }
-                placeholder="Course Description"
-              />
-
-              {/* Image Preview */}
-              <div className="mb-2 text-center">
-                {editingCourse.newImage ? (
-                  <img
-                    src={URL.createObjectURL(editingCourse.newImage)}
-                    alt="Preview"
-                    style={{
-                      width: "150px",
-                      height: "150px",
-                      objectFit: "cover",
-                      borderRadius: "8px",
-                    }}
-                  />
-                ) : editingCourse.image ? (
-                  <img
-                    src={editingCourse.image}  // ✅ FIXED: Direct Cloudinary URL
-                    alt={editingCourse.title}
-                    style={{
-                      width: "150px",
-                      height: "150px",
-                      objectFit: "cover",
-                      borderRadius: "8px",
-                    }}
-                  />
-                ) : null}
+      {editing && (
+        <div className="adm-modal-backdrop">
+          <div className="adm-modal">
+            <p className="adm-modal__title"><i className="bi bi-pencil-square me-2"></i>Edit Course</p>
+            <form onSubmit={handleUpdate}>
+              <div style={{ marginBottom: 14 }}>
+                <label className="adm-label">Title</label>
+                <input className="adm-input" value={editing.title} onChange={(e) => setEditing({ ...editing, title: e.target.value })} />
               </div>
-
-              {/* File Input */}
-              <input
-                type="file"
-                className="form-control mb-3"
-                accept="image/*"
-                onChange={(e) => {
-                  if (e.target.files && e.target.files[0]) {
-                    setEditingCourse({
-                      ...editingCourse,
-                      newImage: e.target.files[0],
-                    });
-                  }
-                }}
-              />
-
-              <button type="submit" className="btn btn-success">
-                Save Changes
-              </button>
-              <button
-                type="button"
-                className="btn btn-secondary ms-2"
-                onClick={() => setEditingCourse(null)}
-              >
-                Cancel
-              </button>
+              <div style={{ marginBottom: 14 }}>
+                <label className="adm-label">Description</label>
+                <textarea className="adm-textarea" value={editing.Description} onChange={(e) => setEditing({ ...editing, Description: e.target.value })} />
+              </div>
+              <div style={{ textAlign: "center", marginBottom: 14 }}>
+                <img src={editing.newImage ? URL.createObjectURL(editing.newImage) : editing.image} alt="preview" className="adm-preview" style={{ width: "100%", height: 130 }} />
+              </div>
+              <div style={{ marginBottom: 16 }}>
+                <label className="adm-label">Replace Image</label>
+                <input className="adm-input" type="file" accept="image/*" onChange={(e) => setEditing({ ...editing, newImage: e.target.files?.[0] ?? null })} />
+              </div>
+              <div className="adm-modal__footer">
+                <button type="submit" className="adm-btn adm-btn--success"><i className="bi bi-check-lg me-1"></i>Save</button>
+                <button type="button" className="adm-btn adm-btn--ghost" onClick={() => setEditing(null)}>Cancel</button>
+              </div>
             </form>
           </div>
-        )}
-      </div>
-    </section>
+        </div>
+      )}
+    </div>
   );
 }

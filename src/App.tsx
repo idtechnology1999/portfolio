@@ -46,7 +46,7 @@ function App() {
 <Router>
   <Routes>
     <Route path="/" element={<Home />} />
-    <Route path="Admin/*" element={<Admin />} />
+    <Route path="/Admin/*" element={<Admin />} />
     <Route path="/MyPortfolio" element={<MyPortfolio/>} />
   </Routes>
 </Router>

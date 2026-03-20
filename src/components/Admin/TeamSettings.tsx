@@ -1,243 +1,130 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
+import "./admin.css";
+import axios from "axios";
 
 const apiurl = import.meta.env.VITE_API_BASE_URL;
 
-// -----------------------------
-// TYPES
-// -----------------------------
-interface TeamMember {
-  _id: string;
-  full_name: string;
-  profession: string;
-  picture?: string;
-}
+interface Member { _id: string; full_name: string; profession: string; picture?: string; }
+interface Editing extends Member { newPicture: File | null; }
 
-interface EditingMember extends TeamMember {
-  newPicture: File | null;
-}
+export default function TeamSettings() {
+  const [members, setMembers] = useState<Member[]>([]);
+  const [editing, setEditing] = useState<Editing | null>(null);
+  const [toast, setToast] = useState<{ msg: string; type: "success" | "danger" } | null>(null);
 
-// -----------------------------
-// COMPONENT
-// -----------------------------
-export default function Settings() {
-  const [members, setMembers] = useState<TeamMember[]>([]);
-  const [editingMember, setEditingMember] = useState<EditingMember | null>(null);
-  const [message, setMessage] = useState<string>("");
-
-  // -----------------------------
-  // FETCH MEMBERS
-  // -----------------------------
+  useEffect(() => { fetchMembers(); }, []);
   useEffect(() => {
-    fetchMembers();
-  }, []);
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 3000);
+    return () => clearTimeout(t);
+  }, [toast]);
 
   const fetchMembers = async () => {
     try {
-      const res = await axios.get<TeamMember[]>(`${apiurl}/api/Team/Fetch`);
-      setMembers(res.data);
-    } catch (err) {
-      console.error("Error fetching members:", err);
-      setMessage("Error fetching team members");
-    }
+      const res = await axios.get(`${apiurl}/api/team/all`);
+      setMembers(res.data.data ?? []);
+    } catch { setToast({ msg: "Error fetching members", type: "danger" }); }
   };
 
-  // -----------------------------
-  // EDIT MEMBER
-  // -----------------------------
-  const handleEdit = (member: TeamMember) => {
-    setEditingMember({
-      ...member,
-      newPicture: null,
-    });
-  };
-
-  // -----------------------------
-  // UPDATE MEMBER
-  // -----------------------------
-  const handleUpdate = async () => {
-    if (!editingMember) return;
-
+  const handleUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editing) return;
+    const fd = new FormData();
+    fd.append("full_name", editing.full_name);
+    fd.append("profession", editing.profession);
+    if (editing.newPicture) fd.append("picture", editing.newPicture);
     try {
-      const formData = new FormData();
-      formData.append("full_name", editingMember.full_name);
-      formData.append("profession", editingMember.profession);
-
-      if (editingMember.newPicture) {
-        formData.append("picture", editingMember.newPicture);
-      }
-
-      const res = await axios.put(
-        `${apiurl}/api/Team/edit/${editingMember._id}`,
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-
-      setMessage(res.data.message);
-      setEditingMember(null);
-      fetchMembers();
-    } catch (err) {
-      console.error("Error updating member:", err);
-      setMessage("Error updating member");
-    }
+      const res = await axios.put(`${apiurl}/api/team/edit/${editing._id}`, fd, { headers: { "Content-Type": "multipart/form-data" } });
+      setToast({ msg: res.data.message, type: "success" });
+      setEditing(null); fetchMembers();
+    } catch { setToast({ msg: "Error updating member", type: "danger" }); }
   };
 
-  // -----------------------------
-  // DELETE MEMBER
-  // -----------------------------
-  const handleDelete = async (memberId: string) => {
+  const handleDelete = async (id: string) => {
+    if (!confirm("Delete this member?")) return;
     try {
-      const res = await axios.delete(`${apiurl}/api/Team/delete/${memberId}`);
-      setMessage(res.data.message);
+      const res = await axios.delete(`${apiurl}/api/team/delete/${id}`);
+      setToast({ msg: res.data.message, type: "success" });
       fetchMembers();
-    } catch {
-      setMessage("Error deleting member");
-    }
+    } catch { setToast({ msg: "Error deleting member", type: "danger" }); }
   };
 
-  // -----------------------------
-  // ALERT
-  // -----------------------------
-  useEffect(() => {
-    if (!message) return;
-    const timer = setTimeout(() => setMessage(""), 2500);
-    return () => clearTimeout(timer);
-  }, [message]);
-
-  // -----------------------------
-  // RENDER
-  // -----------------------------
   return (
-    <section className="p-4">
-      {/* ALERT */}
-      {message && (
-        <div
-          className="alert alert-success text-center position-fixed top-50 start-50 translate-middle"
-          role="alert"
-          style={{ zIndex: 9999, minWidth: "250px" }}
-        >
-          {message}
-        </div>
-      )}
+    <div className="adm-page">
+      {toast && <div className={`adm-toast adm-toast--${toast.type}`}>{toast.msg}</div>}
 
-      {/* BREADCRUMB */}
-      <nav aria-label="breadcrumb">
-        <ol className="breadcrumb mb-4">
-          <li className="breadcrumb-item"><a>Dashboard</a></li>
-          <li className="breadcrumb-item active">Settings</li>
-        </ol>
-      </nav>
+      <div className="adm-breadcrumb"><a href="#">Dashboard</a> / <span>Team Settings</span></div>
+      <div className="adm-header">
+        <h1 className="adm-title">Team Settings</h1>
+        <p className="adm-subtitle">Edit or remove team members</p>
+      </div>
 
-      {/* TEAM MEMBERS LIST */}
-      <div className="card shadow-sm p-4 form-card">
-        <h5 className="text-primary mb-3 fw-semibold">Team Members</h5>
-        <div className="row">
+      <div className="adm-card">
+        <div className="adm-card-header"><span><i className="bi bi-people-fill me-2"></i>Members ({members.length})</span></div>
+        <div className="adm-card-body">
           {members.length === 0 ? (
-            <div className="alert alert-warning">Loading...</div>
+            <div className="adm-empty"><i className="bi bi-people"></i><p>No members yet</p></div>
           ) : (
-            members.map((member) => (
-              <div key={member._id} className="col-md-4 mb-3">
-                <div className="card shadow-sm p-3 text-center">
-                  {member.picture && (
-                    <img
-                      src={member.picture}  // ✅ FIXED: Direct Cloudinary URL
-                      alt={member.full_name}
-                      className="rounded-circle mb-3"
-                      style={{ width: "100px", height: "100px", objectFit: "cover" }}
-                    />
-                  )}
-                  <h6 className="fw-semibold">{member.full_name}</h6>
-                  <p className="text-muted">{member.profession}</p>
-                  <div className="d-flex gap-2 mt-2 justify-content-center">
-                    <button
-                      className="btn btn-sm btn-outline-warning"
-                      onClick={() => handleEdit(member)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn btn-sm btn-outline-danger"
-                      onClick={() => handleDelete(member._id)}
-                    >
-                      Delete
-                    </button>
+            <div className="adm-grid adm-grid--3">
+              {members.map((m) => (
+                <div key={m._id} className="adm-item-card">
+                  {m.picture
+                    ? <img src={m.picture} alt={m.full_name} className="adm-item-card__img--avatar" />
+                    : <div style={{ width: 80, height: 80, borderRadius: "50%", background: "linear-gradient(135deg,#2563eb,#7c3aed)", display: "flex", alignItems: "center", justifyContent: "center", margin: "16px auto 0", color: "#fff", fontSize: 28, fontWeight: 700 }}>{m.full_name.charAt(0)}</div>
+                  }
+                  <div className="adm-item-card__body">
+                    <p className="adm-item-card__title">{m.full_name}</p>
+                    <p className="adm-item-card__sub">{m.profession}</p>
+                    <div className="adm-item-card__actions">
+                      <button className="adm-btn adm-btn--warning adm-btn" style={{ padding: "6px 14px", fontSize: 13 }} onClick={() => setEditing({ ...m, newPicture: null })}>
+                        <i className="bi bi-pencil"></i> Edit
+                      </button>
+                      <button className="adm-btn adm-btn--danger" style={{ padding: "6px 14px", fontSize: 13 }} onClick={() => handleDelete(m._id)}>
+                        <i className="bi bi-trash3"></i> Delete
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
+              ))}
+            </div>
           )}
         </div>
+      </div>
 
-        {/* EDIT FORM */}
-        {editingMember && (
-          <div className="card shadow p-4 mt-4">
-            <h5>Edit Member</h5>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleUpdate();
-              }}
-            >
-              <input
-                type="text"
-                className="form-control mb-2"
-                value={editingMember.full_name}
-                onChange={(e) =>
-                  setEditingMember({ ...editingMember, full_name: e.target.value })
-                }
-                placeholder="Full Name"
-              />
-              <input
-                type="text"
-                className="form-control mb-2"
-                value={editingMember.profession}
-                onChange={(e) =>
-                  setEditingMember({ ...editingMember, profession: e.target.value })
-                }
-                placeholder="Profession"
-              />
-
-              {/* IMAGE PREVIEW */}
-              <div className="text-center mb-3">
-                {editingMember.newPicture ? (
-                  <img
-                    src={URL.createObjectURL(editingMember.newPicture)}
-                    alt="Preview"
-                    style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%" }}
-                  />
-                ) : editingMember.picture ? (
-                  <img
-                    src={editingMember.picture}  // ✅ FIXED: Direct Cloudinary URL
-                    alt="Preview"
-                    style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%" }}
-                  />
-                ) : null}
+      {editing && (
+        <div className="adm-modal-backdrop">
+          <div className="adm-modal">
+            <p className="adm-modal__title"><i className="bi bi-pencil-square me-2"></i>Edit Member</p>
+            <form onSubmit={handleUpdate}>
+              <div className="adm-form-grid" style={{ marginBottom: 14 }}>
+                <div>
+                  <label className="adm-label">Full Name</label>
+                  <input className="adm-input" value={editing.full_name} onChange={(e) => setEditing({ ...editing, full_name: e.target.value })} />
+                </div>
+                <div style={{ marginTop: 14 }}>
+                  <label className="adm-label">Profession</label>
+                  <input className="adm-input" value={editing.profession} onChange={(e) => setEditing({ ...editing, profession: e.target.value })} />
+                </div>
               </div>
-
-              {/* FILE INPUT */}
-              <input
-                type="file"
-                className="form-control mb-3"
-                accept="image/*"
-                onChange={(e) => {
-                  if (e.target.files?.[0]) {
-                    setEditingMember({ ...editingMember, newPicture: e.target.files[0] });
-                  }
-                }}
-              />
-
-              <button type="submit" className="btn btn-success">Save Changes</button>
-              <button
-                type="button"
-                className="btn btn-secondary ms-2"
-                onClick={() => setEditingMember(null)}
-              >
-                Cancel
-              </button>
+              <div style={{ textAlign: "center", marginBottom: 14 }}>
+                <img
+                  src={editing.newPicture ? URL.createObjectURL(editing.newPicture) : editing.picture}
+                  alt="preview" className="adm-preview adm-preview--circle"
+                  style={{ width: 90, height: 90 }}
+                />
+              </div>
+              <div style={{ marginBottom: 16 }}>
+                <label className="adm-label">Replace Image</label>
+                <input className="adm-input" type="file" accept="image/*" onChange={(e) => setEditing({ ...editing, newPicture: e.target.files?.[0] ?? null })} />
+              </div>
+              <div className="adm-modal__footer">
+                <button type="submit" className="adm-btn adm-btn--success"><i className="bi bi-check-lg me-1"></i>Save</button>
+                <button type="button" className="adm-btn adm-btn--ghost" onClick={() => setEditing(null)}>Cancel</button>
+              </div>
             </form>
           </div>
-        )}
-      </div>
-    </section>
+        </div>
+      )}
+    </div>
   );
 }

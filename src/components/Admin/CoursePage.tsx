@@ -4,7 +4,7 @@ import axios from "axios";
 
 const apiurl = import.meta.env.VITE_API_BASE_URL;
 
-export default function SkillsPage() {
+export default function CoursePage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState<File | null>(null);
@@ -15,13 +15,13 @@ export default function SkillsPage() {
 
   useEffect(() => {
     if (!toast) return;
-    const t = setTimeout(() => setToast(null), 3500);
+    const t = setTimeout(() => setToast(null), 3000);
     return () => clearTimeout(t);
   }, [toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!image) { setToast({ msg: "Please upload an image", type: "danger" }); return; }
+    if (!image) { setToast({ msg: "Image is required", type: "danger" }); return; }
     setLoading(true);
     const fd = new FormData();
     fd.append("title", title); fd.append("description", description); fd.append("image", image);
@@ -39,40 +39,34 @@ export default function SkillsPage() {
   return (
     <div className="adm-page">
       {toast && <div className={`adm-toast adm-toast--${toast.type}`}>{toast.msg}</div>}
-      <div className="adm-breadcrumb"><a href="#">Dashboard</a> / <span>Skills Management</span></div>
+      <div className="adm-breadcrumb"><a href="#">Dashboard</a> / <span>Add Course</span></div>
       <div className="adm-header">
-        <h1 className="adm-title">Skills Management</h1>
-        <p className="adm-subtitle">Add skills and expertise shown on the website</p>
+        <h1 className="adm-title">Add Course</h1>
+        <p className="adm-subtitle">Add a new course to the website</p>
       </div>
       <div className="adm-card">
-        <div className="adm-card-header"><i className="bi bi-lightning-charge-fill me-2"></i>Add Skill</div>
+        <div className="adm-card-header"><i className="bi bi-journal-plus me-2"></i>New Course</div>
         <div className="adm-card-body">
           <form onSubmit={handleSubmit}>
             <div className="adm-form-grid adm-form-grid--3">
               <div>
-                <label className="adm-label">Title</label>
-                <input className="adm-input" type="text" placeholder="e.g. React, Photoshop..." value={title} onChange={(e) => setTitle(e.target.value)} required />
+                <label className="adm-label">Course Title</label>
+                <input className="adm-input" type="text" placeholder="e.g. Web Development" value={title} onChange={(e) => setTitle(e.target.value)} required />
               </div>
               <div>
                 <label className="adm-label">Description</label>
                 <input className="adm-input" type="text" placeholder="Short description" value={description} onChange={(e) => setDescription(e.target.value)} required />
               </div>
               <div>
-                <label className="adm-label">Image</label>
+                <label className="adm-label">Cover Image</label>
                 <input ref={fileRef} className="adm-input" type="file" accept="image/*"
-                  onChange={(e) => {
-                    const f = e.target.files?.[0] ?? null;
-                    const allowed = ["image/jpeg", "image/png", "image/jpg", "image/webp"];
-                    if (f && !allowed.includes(f.type)) { setToast({ msg: "Only JPG, PNG, WEBP allowed", type: "danger" }); return; }
-                    if (f && f.size > 30 * 1024 * 1024) { setToast({ msg: "Max file size is 30MB", type: "danger" }); return; }
-                    setImage(f); setPreview(f ? URL.createObjectURL(f) : null);
-                  }} required />
+                  onChange={(e) => { const f = e.target.files?.[0] ?? null; setImage(f); setPreview(f ? URL.createObjectURL(f) : null); }} required />
               </div>
             </div>
             {preview && <img src={preview} alt="preview" className="adm-preview" style={{ marginTop: 14 }} />}
             <div style={{ marginTop: 20 }}>
               <button type="submit" className="adm-btn adm-btn--primary" disabled={loading}>
-                {loading ? <><span className="adm-spinner"></span> Adding...</> : <><i className="bi bi-lightning me-1"></i>Add Skill</>}
+                {loading ? <><span className="adm-spinner"></span> Adding...</> : <><i className="bi bi-plus-lg me-1"></i>Add Course</>}
               </button>
             </div>
           </form>
