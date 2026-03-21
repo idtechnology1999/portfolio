@@ -147,54 +147,57 @@ export default function UploadVideo() {
     setUploading(true);
     setUploadProgress(0);
 
-    const formData = new FormData();
-    formData.append('video', selectedFile);
-    formData.append('title', title);
-    formData.append('course', course);
-    formData.append('description', description);
-    formData.append('duration', videoDuration);
-
     try {
-      const response = await axios.post(
-        `${API_URL}/api/video/upload`,
+      // Step 1: get signed upload params from backend
+      const sigRes = await axios.get(`${API_URL}/api/video/signature`);
+      const { timestamp, signature, cloudName, apiKey, folder } = sigRes.data;
+
+      // Step 2: upload directly to Cloudinary
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      formData.append('timestamp', String(timestamp));
+      formData.append('signature', signature);
+      formData.append('api_key', apiKey);
+      formData.append('folder', folder);
+      formData.append('resource_type', 'video');
+
+      const cloudRes = await axios.post(
+        `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`,
         formData,
         {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
           onUploadProgress: (progressEvent) => {
-            const percentCompleted = Math.round(
-              (progressEvent.loaded * 100) / (progressEvent.total || 1)
-            );
-            setUploadProgress(percentCompleted);
+            const percent = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 1));
+            setUploadProgress(percent);
           },
         }
       );
 
-      if (response.data.success) {
-        alert('Video uploaded successfully!');
-        await fetchVideos();
-        
-        setSelectedFile(null);
-        setTitle('');
-        setCourse('');
-        setDescription('');
-        setVideoDuration('');
-        setPreviewUrl('');
-        setUploadProgress(0);
-        
-        if (fileInputRef.current) {
-          fileInputRef.current.value = '';
-        }
-      } else {
-        alert(`Upload failed: ${response.data.message}`);
-      }
+      // Step 3: save metadata to backend
+      await axios.post(`${API_URL}/api/video/save`, {
+        title,
+        course,
+        description,
+        duration: videoDuration,
+        videoUrl:      cloudRes.data.secure_url,
+        videoPublicId: cloudRes.data.public_id,
+        fileName:      selectedFile.name,
+        fileSize:      `${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB`,
+      });
+
+      alert('Video uploaded successfully!');
+      await fetchVideos();
+      setSelectedFile(null);
+      setTitle('');
+      setCourse('');
+      setDescription('');
+      setVideoDuration('');
+      setPreviewUrl('');
+      setUploadProgress(0);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+
     } catch (error: any) {
       console.error('Upload error:', error);
-      alert(
-        error.response?.data?.message || 
-        'Failed to upload video. Please try again.'
-      );
+      alert(error.response?.data?.message || 'Failed to upload video. Please try again.');
     } finally {
       setUploading(false);
     }
