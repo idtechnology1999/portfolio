@@ -159,7 +159,6 @@ export default function UploadVideo() {
       formData.append('signature', signature);
       formData.append('api_key', apiKey);
       formData.append('folder', folder);
-      formData.append('resource_type', 'video');
 
       const cloudRes = await axios.post(
         `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`,
