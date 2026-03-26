@@ -13,6 +13,7 @@ interface MobileCourse {
 interface Editing extends MobileCourse {
   newImage?: File | null;
   newPreview?: string | null;
+  newOutline?: File | null;
 }
 
 export default function MobileCourseSettings() {
@@ -23,7 +24,9 @@ export default function MobileCourseSettings() {
   const [newTitle, setNewTitle]   = useState("");
   const [newImage, setNewImage]   = useState<File | null>(null);
   const [newPreview, setNewPreview] = useState<string | null>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
+  const [newOutline, setNewOutline] = useState<File | null>(null);
+  const fileRef    = useRef<HTMLInputElement>(null);
+  const outlineRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => { fetchCourses(); }, []);
 
@@ -50,13 +53,15 @@ export default function MobileCourseSettings() {
     const fd = new FormData();
     fd.append("title", newTitle);
     fd.append("image", newImage);
+    if (newOutline) fd.append("outline", newOutline);
     try {
       const res = await axios.post(`${apiurl}/api/mobile/courses/add`, fd, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       notify(res.data.message);
-      setNewTitle(""); setNewImage(null); setNewPreview(null);
+      setNewTitle(""); setNewImage(null); setNewPreview(null); setNewOutline(null);
       if (fileRef.current) fileRef.current.value = "";
+      if (outlineRef.current) outlineRef.current.value = "";
       fetchCourses();
     } catch {
       notify("Error adding course", "danger");
@@ -72,6 +77,7 @@ export default function MobileCourseSettings() {
     const fd = new FormData();
     fd.append("title", editing.title);
     if (editing.newImage) fd.append("image", editing.newImage);
+    if (editing.newOutline) fd.append("outline", editing.newOutline);
     try {
       const res = await axios.put(`${apiurl}/api/mobile/courses/edit/${editing._id}`, fd, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -147,14 +153,35 @@ export default function MobileCourseSettings() {
                 />
               </div>
               <div>
-                <button className="adm-btn adm-btn--primary" style={{ width: "100%" }} type="submit" disabled={loading}>
-                  {loading ? <><span className="adm-spinner" /> Adding…</> : "Add Course"}
-                </button>
+                <label className="adm-label">Course Outline <span style={{ color: "#94a3b8", fontWeight: 400 }}>(Excel, optional)</span></label>
+                <input
+                  ref={outlineRef}
+                  className="adm-input"
+                  type="file"
+                  accept=".xlsx,.xls"
+                  onChange={(e) => setNewOutline(e.target.files?.[0] ?? null)}
+                />
               </div>
             </div>
-            {newPreview && (
-              <img src={newPreview} alt="preview" className="adm-preview" style={{ width: 120, height: 80, marginTop: 14 }} />
-            )}
+            <div style={{ marginTop: 8, fontSize: 12, color: "#94a3b8" }}>
+              📋 Excel format: columns <strong>Module</strong>, <strong>Week</strong>, <strong>Topic</strong>, <strong>Details</strong>
+              &nbsp;—&nbsp;
+              <a
+                href="data:text/csv;charset=utf-8,Module%2CWeek%2CTopic%2CDetails%0AHTML%2CWeek%201%2CIntroduction%20to%20HTML%2CTags%2C%20structure%2C%20doctype%0AHTML%2CWeek%202%2CForms%20%26%20Tables%2CInput%20types%2C%20table%20layout%0ACSS%2CWeek%203%2CSelectors%20%26%20Box%20Model%2CMargin%2C%20padding%2C%20borders%0ACSS%2CWeek%204%2CFlexbox%20%26%20Grid%2CResponsive%20layouts%0AJavaScript%2CWeek%205%2CVariables%20%26%20Functions%2Cvar%2C%20let%2C%20const%2C%20arrow%20functions%0AJavaScript%2CWeek%206%2CDOM%20Manipulation%2CquerySelector%2C%20events"
+                download="course_outline_template.csv"
+                style={{ color: "#2563eb" }}
+              >
+                Download template
+              </a>
+            </div>
+            <div style={{ display: "flex", gap: 12, marginTop: 14, alignItems: "center" }}>
+              {newPreview && (
+                <img src={newPreview} alt="preview" className="adm-preview" style={{ width: 120, height: 80 }} />
+              )}
+              <button className="adm-btn adm-btn--primary" type="submit" disabled={loading}>
+                {loading ? <><span className="adm-spinner" /> Adding…</> : "Add Course"}
+              </button>
+            </div>
           </form>
         </div>
       </div>
@@ -265,6 +292,17 @@ export default function MobileCourseSettings() {
                     setEditing({ ...editing, newImage: f, newPreview: f ? URL.createObjectURL(f) : null });
                   }}
                 />
+              </div>
+
+              <div style={{ marginBottom: 16 }}>
+                <label className="adm-label">Update Course Outline <span style={{ color: "#94a3b8", fontWeight: 400 }}>(Excel, optional)</span></label>
+                <input
+                  className="adm-input"
+                  type="file"
+                  accept=".xlsx,.xls"
+                  onChange={(e) => setEditing({ ...editing, newOutline: e.target.files?.[0] ?? null })}
+                />
+                <p style={{ fontSize: 12, color: "#94a3b8", marginTop: 4 }}>Columns: <strong>Week</strong>, <strong>Topic</strong>, <strong>Details</strong></p>
               </div>
 
               <div className="adm-modal__footer">
