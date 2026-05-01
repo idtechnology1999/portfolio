@@ -4,9 +4,9 @@ import QuoteCarousel from "./QuoteCarousel";
 
 import companyImg from "../assets/images/imgheros2.png";
 
-const digitalSol = "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80";
-const techTrain = "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80";
-const mobileApp = "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&q=80";
+const digitalSol = "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80";
+const techTrain = "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&q=80";
+const mobileApp = "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80";
 
 const stats = [
   { value: 50, label: "Projects Delivered", icon: "bi-rocket-takeoff-fill" },

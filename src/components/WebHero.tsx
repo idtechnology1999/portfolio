@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import "./Hero.css";
-import companyImage from "../assets/images/imgheros1.png";
 
 export default function Hero() {
   const skills = [
@@ -76,11 +75,11 @@ export default function Hero() {
             data-aos="fade-left"
             data-aos-delay="400"
           >
-<img
-  src={companyImage}
-  alt="ID TECH Real World Innovations"
-  className="img-fluid hero-image"
-/>
+            <img
+              src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&q=80"
+              alt="ID TECH Real World Innovations"
+              className="img-fluid hero-image"
+            />
           </div>
 
           {/* Company Text */}
