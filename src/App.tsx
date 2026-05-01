@@ -1,24 +1,29 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './style/global.css';
+import './style/spacing.css';
 import Navbar from './components/Navbar';
-// import Hero from './components/Hero';
-// import About from './components/About';
+import About from './components/About';
 import Skills from './components/Skills';
 import Team from './components/Team';
 import Portfolio from './components/Portfolio';
-// import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Dashboard from "./components/Admin/Dashboard";
 import MyPortfolio from "./components/MyPortfolio";
-import WebHero from "./components/WebHero"
+import WebHero from "./components/WebHero";
+import CoreValues from "./components/CoreValues";
+import Services from "./components/Services";
+import Stats from "./components/Stats";
 
 const Home =()=>{
   return(
     <>
     <Navbar/> 
     <WebHero />
-    {/* <About/> */}
+    <About/>
+    <Services/>
+    <CoreValues/>
+    <Stats/>
     <Skills/>
     <Team/>
     <Portfolio/>

@@ -36,18 +36,18 @@ export default function Hero() {
   id="hero"
   className="d-flex align-items-center position-relative"
   style={{
-    height: "96vh",
-    backgroundColor: "white", // dark background helps icons glow
+    height: "calc(100vh - var(--header-height))",
+    backgroundColor: "white",
     color: "#fff",
     overflow: "hidden",
   }}
 >
       <div className="container">
-        <div className="row align-items-center justify-content-center text-center text-lg-start" style={{height:"96vh"}} >
+        <div className="row align-items-center justify-content-center text-center text-lg-start" style={{height:"100%"}} >
           
           {/* 👤 Image First in Mobile */}
           <div
-            className="col-12 col-lg-6 order-1 order-lg-2 d-flex align-items-center justify-content-center mt-5 mb-4 mb-lg-0"
+            className="col-12 col-lg-6 order-1 order-lg-2 d-flex align-items-center justify-content-center mb-4 mb-lg-0"
             data-aos="fade-left"
             data-aos-delay="400"
             id="background"

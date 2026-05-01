@@ -4,7 +4,7 @@ import "./Footer.css";
 export default function Footer() {
   return (
     <footer className="footer-section text-center text-lg-start">
-      <div className="container py-5">
+      <div className="container footer-container">
         <div className="row gy-4 justify-content-between">
           {/* Brand Info */}
           <div className="col-lg-4 col-md-6">

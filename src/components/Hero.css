@@ -1,33 +1,39 @@
+/* =============================================
+   IDTECH — HERO SECTION & SHARED STYLES
+   ============================================= */
 
-*{
-    padding: 0px;
-    margin: 0px;
-    box-sizing: border-box;
-}
-.navbar .nav-link:hover {
-  color: #ff8c00 !important;
-  transform: translateY(-2px);
-}
-
-.navbar .nav-link.active {
-  color: #ff8c00 !important;
-  font-weight: 600;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-/* Small shadow when scrolling */
-.fixed-top.scrolled {
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-#background {
-background-image: url("../assets/images/backgroundimage.png");  background-repeat: no-repeat;
-  /* background-position: center; */
-  background-size: cover;     /* ✅ Keeps aspect ratio and fills area */
-  background-attachment: fixed; /* Optional: creates a subtle parallax effect */
+/* ── HERO LAYOUT ── */
+#hero {
   position: relative;
-  height: 70vh;
-  background-attachment: fixed;
 }
+
+.hero-text h1 {
+  font-size: 3.2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+
+.hero-text h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  min-height: 2.5rem;
+}
+
+.hero-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 20px;
+  filter: drop-shadow(0 20px 60px rgba(255, 140, 0, 0.2));
+}
+
+/* ── TYPING CURSOR ── */
 .blinking-cursor {
   display: inline-block;
   width: 1ch;
@@ -35,96 +41,10 @@ background-image: url("../assets/images/backgroundimage.png");  background-repea
 }
 
 @keyframes blink {
-  50% {
-    opacity: 0;
-  }
+  50% { opacity: 0; }
 }
 
-
-.bouncing {
-  animation: bounce 3s infinite ease-in-out;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-/* 🟠 Medium screens (tablets) */
-@media (max-width: 992px) {
-  #background {
-    height: 65vh; /* smaller for tablets */
-    background-attachment: scroll;
-  }
-}
-
-/* 🔵 Small screens (phones) */
-@media (max-width: 576px) {
-  #background {
-    height: 55vh; /* more compact on mobile */
-    background-attachment: scroll;
-  }
-}
-
-
-/* 🔵 Small screens (phones) */
-@media (max-width: 500px) {
-  #background {
-    height: 40vh; /* more compact on mobile */
-    background-attachment: scroll;
-  }
-}
-
-
-/* 🔵 Small screens (phones) */
-@media (max-width: 400px) {
-  #background {
-    height: 30vh; /* more compact on mobile */
-    background-attachment: scroll;
-  }
-}
-
-
-
-/* Ensure the hero image never exceeds its container */
-.hero-image {
-  max-width: 100%;
-  height: auto;
-}
-
-/* Optional: for small screens, reduce the height */
-@media (max-width: 768px) {
-  #hero {
-    padding-top: 60px; /* push content down a bit */
-  }
-
-  .hero-text h1 {
-    font-size: 2rem;
-  }
-
-  .hero-text h3 {
-    font-size: 1.4rem;
-  }
-
-  .hero-image {
-    max-height: 300px; /* prevents it from cutting off header */
-    object-fit: contain;
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 🌌 Floating Background Icons */
+/* ── FLOATING TECH ICONS ── */
 .floating-icons {
   position: absolute;
   top: 0;
@@ -133,122 +53,118 @@ background-image: url("../assets/images/backgroundimage.png");  background-repea
   height: 100%;
   overflow: hidden;
   z-index: 0;
-  pointer-events: none; /* allow clicking through */
+  pointer-events: none;
 }
 
-/* Each floating icon */
 .floating-icon {
   position: absolute;
-  font-size: 48px;
-  opacity: 0.15;
-  color: #ff8c00;
-  animation: flyAround 18s linear infinite;
+  font-size: 44px;
+  opacity: 0.1;
+  color: #FF8C00;
+  animation: flyAround 22s linear infinite;
   transform-origin: center;
 }
 
-/* Random starting positions for variety */
-.floating-icon:nth-child(1) { top: 5%; left: 10%; animation-duration: 22s; animation-delay: 2s; }
-.floating-icon:nth-child(2) { top: 20%; left: 80%; animation-duration: 25s; animation-delay: 4s; }
-.floating-icon:nth-child(3) { top: 40%; left: 50%; animation-duration: 26s; animation-delay: 1s; }
-.floating-icon:nth-child(4) { top: 70%; left: 15%; animation-duration: 23s; animation-delay: 3s; }
-.floating-icon:nth-child(5) { top: 85%; left: 75%; animation-duration: 28s; animation-delay: 5s; }
-.floating-icon:nth-child(6) { top: 30%; left: 35%; animation-duration: 24s; animation-delay: 6s; }
-.floating-icon:nth-child(7) { top: 10%; left: 60%; animation-duration: 27s; animation-delay: 1s; }
-.floating-icon:nth-child(8) { top: 50%; left: 80%; animation-duration: 29s; animation-delay: 3s; }
-.floating-icon:nth-child(9) { top: 60%; left: 40%; animation-duration: 30s; animation-delay: 2s; }
+.floating-icon:nth-child(1)  { top: 5%;  left: 10%; animation-duration: 22s; animation-delay: 2s; }
+.floating-icon:nth-child(2)  { top: 20%; left: 80%; animation-duration: 25s; animation-delay: 4s; }
+.floating-icon:nth-child(3)  { top: 40%; left: 50%; animation-duration: 26s; animation-delay: 1s; }
+.floating-icon:nth-child(4)  { top: 70%; left: 15%; animation-duration: 23s; animation-delay: 3s; }
+.floating-icon:nth-child(5)  { top: 85%; left: 75%; animation-duration: 28s; animation-delay: 5s; }
+.floating-icon:nth-child(6)  { top: 30%; left: 35%; animation-duration: 24s; animation-delay: 6s; }
+.floating-icon:nth-child(7)  { top: 10%; left: 60%; animation-duration: 27s; animation-delay: 1s; }
+.floating-icon:nth-child(8)  { top: 50%; left: 80%; animation-duration: 29s; animation-delay: 3s; }
+.floating-icon:nth-child(9)  { top: 60%; left: 40%; animation-duration: 30s; animation-delay: 2s; }
 .floating-icon:nth-child(10) { top: 90%; left: 20%; animation-duration: 32s; animation-delay: 4s; }
-.floating-icon:nth-child(11) { top: 15%; left: 5%; animation-duration: 31s; animation-delay: 5s; }
+.floating-icon:nth-child(11) { top: 15%; left: 5%;  animation-duration: 31s; animation-delay: 5s; }
 
-/* ✨ Randomly flying around animation */
 @keyframes flyAround {
-  0% {
-    transform: translate(0, 0) rotate(0deg) scale(1);
-    opacity: 0.15;
-  }
-  25% {
-    transform: translate(40px, -60px) rotate(30deg) scale(1.1);
-    opacity: 0.25;
-  }
-  50% {
-    transform: translate(-60px, 40px) rotate(-45deg) scale(0.9);
-    opacity: 0.35;
-  }
-  75% {
-    transform: translate(60px, 60px) rotate(15deg) scale(1.05);
-    opacity: 0.25;
-  }
-  100% {
-    transform: translate(0, 0) rotate(0deg) scale(1);
-    opacity: 0.15;
-  }
+  0%   { transform: translate(0, 0)       rotate(0deg)   scale(1);    opacity: 0.1; }
+  25%  { transform: translate(40px, -60px) rotate(30deg)  scale(1.1);  opacity: 0.18; }
+  50%  { transform: translate(-60px, 40px) rotate(-45deg) scale(0.9);  opacity: 0.22; }
+  75%  { transform: translate(60px, 60px)  rotate(15deg)  scale(1.05); opacity: 0.18; }
+  100% { transform: translate(0, 0)        rotate(0deg)   scale(1);    opacity: 0.1; }
 }
 
-
-.floating-icon {
-  text-shadow: 0 0 10px rgba(255,255,255,0.3);
+/* ── HERO SKILL BADGES ── */
+.hero-badge {
+  padding: 6px 16px;
+  border-radius: 25px;
+  background: rgba(255, 140, 0, 0.08);
+  color: #1a1a1a;
+  font-weight: 500;
+  font-size: 0.85rem;
+  border: 1px solid rgba(255, 140, 0, 0.2);
+  transition: all 0.25s ease;
 }
 
-
-@media (max-width: 768px) {
-  #about img {
-    float: none !important;
-    display: block;
-    margin: 0 auto 20px;
-    max-width: 100%;
-  }
+.hero-badge:hover {
+  background: #FF8C00;
+  color: #fff;
+  border-color: #FF8C00;
 }
 
+/* ── NAVBAR ── */
+.navbar .nav-link:hover {
+  color: #FF8C00 !important;
+}
 
-/* 💬 Floating WhatsApp Button */
+.navbar .nav-link.active {
+  color: #FF8C00 !important;
+  font-weight: 600;
+}
+
+/* ── WHATSAPP FLOAT ── */
 .whatsapp-float {
   position: fixed;
-  width: 55px;
-  height: 55px;
-  bottom: 25px;
-  right: 25px;
+  width: 56px;
+  height: 56px;
+  bottom: 28px;
+  right: 28px;
   background-color: #25d366;
   color: #fff;
   border-radius: 50%;
-  text-align: center;
-  font-size: 28px;
+  font-size: 26px;
   z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: 0.4s;
-  animation: blinkWhatsApp 1.8s infinite ease-in-out;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  animation: waPulse 2s ease-in-out infinite;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.5);
 }
 
 .whatsapp-float:hover {
-  background-color: #1ebe5d;
-  transform: scale(1.1);
-  text-decoration: none;
+  background-color: #1ebf58;
+  transform: scale(1.12);
   color: #fff;
 }
 
-/* ✨ Blink / Pulse Animation */
-@keyframes blinkWhatsApp {
+@keyframes waPulse {
   0%, 100% {
-    box-shadow: 0 0 10px 3px rgba(37, 211, 102, 0.7),
-                0 0 20px 6px rgba(37, 211, 102, 0.5);
-    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6);
   }
   50% {
-    box-shadow: 0 0 25px 6px rgba(37, 211, 102, 0.9),
-                0 0 40px 12px rgba(37, 211, 102, 0.7);
-    transform: scale(1.07);
+    box-shadow: 0 0 0 14px rgba(37, 211, 102, 0);
   }
 }
 
-@media screen and (max-width:533px){
-  #background{
-    background: 
-  linear-gradient(
-    to bottom right,
-    rgba(255, 255, 255, 0.8), 
-    rgba(0, 0, 0, 0.8)
-  ),
-  url("../assets/images/backgroundimage.png");
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  #hero {
+    padding-top: 70px;
+  }
+
+  .hero-text h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero-text h3 {
+    font-size: 1.3rem;
+  }
+
+  .hero-image {
+    max-height: 280px;
+    object-fit: contain;
   }
 }

@@ -1,14 +1,189 @@
+/* =============================================
+   PROFESSIONAL SPACING SYSTEM
+   Modern, consistent spacing across all sections
+   ============================================= */
+
 :root {
   --primary-color: #FFA500;
   --accent-color: #FFD700;
   --bg-color: #fff;
   --text-color: #333;
+  --header-height: 70px;
+  
+  /* Professional spacing variables */
+  --section-padding-desktop: 100px;
+  --section-padding-tablet: 80px;
+  --section-padding-mobile: 60px;
+  --container-max-width: 1200px;
+  --content-spacing: 50px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  padding: 0;
   font-family: 'Poppins', sans-serif;
   background-color: var(--bg-color);
   color: var(--text-color);
+  overflow-x: hidden;
+}
 
+/* Remove all default section spacing */
+section {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+section[id] {
+  scroll-margin-top: var(--header-height);
+}
+
+/* Container max-width */
+.container {
+  max-width: var(--container-max-width);
+}
+
+/* Professional section spacing */
+#hero {
+  min-height: 100vh;
+  padding: 0 !important;
+}
+
+.about-hero {
+  padding: var(--section-padding-desktop) 20px !important;
+}
+
+.about-stats-strip {
+  padding: 80px 20px !important;
+}
+
+.about-services {
+  padding: var(--section-padding-desktop) 20px !important;
+}
+
+.mission-banner {
+  padding: 70px 20px !important;
+}
+
+.about-values-strip {
+  padding: var(--section-padding-desktop) 20px !important;
+}
+
+.about-cta {
+  padding: var(--section-padding-desktop) 20px !important;
+}
+
+.services-section {
+  padding: var(--section-padding-desktop) 0 !important;
+}
+
+.core-values-section {
+  padding: var(--section-padding-desktop) 0 !important;
+}
+
+.stats-section {
+  padding: 80px 0 !important;
+}
+
+.skills-section {
+  padding: var(--section-padding-desktop) 0 !important;
+}
+
+.team-section {
+  padding: var(--section-padding-desktop) 0 !important;
+}
+
+.portfolio-section {
+  padding: var(--section-padding-desktop) 0 !important;
+}
+
+.contact-section {
+  padding: var(--section-padding-desktop) 0 !important;
+}
+
+.footer-section {
+  padding: 80px 0 40px !important;
+}
+
+/* Content spacing within sections */
+.section-header,
+.text-center.mb-5 {
+  margin-bottom: var(--content-spacing) !important;
+}
+
+.section-title {
+  margin-bottom: 15px !important;
+}
+
+.section-desc,
+.section-sub {
+  margin-bottom: 0 !important;
+}
+
+/* Responsive spacing */
+@media (max-width: 991px) {
+  :root {
+    --section-padding-desktop: 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --section-padding-desktop: 60px;
+    --content-spacing: 40px;
+  }
+  
+  .about-hero {
+    padding: var(--section-padding-mobile) 15px !important;
+    min-height: auto !important;
+  }
+  
+  .about-stats-strip {
+    padding: 60px 15px !important;
+  }
+  
+  .about-services {
+    padding: var(--section-padding-mobile) 15px !important;
+  }
+  
+  .mission-banner {
+    padding: 50px 15px !important;
+  }
+  
+  .about-values-strip {
+    padding: var(--section-padding-mobile) 15px !important;
+  }
+  
+  .about-cta {
+    padding: var(--section-padding-mobile) 15px !important;
+  }
+  
+  .services-section,
+  .core-values-section,
+  .skills-section,
+  .team-section,
+  .portfolio-section,
+  .contact-section {
+    padding: var(--section-padding-mobile) 0 !important;
+  }
+  
+  .stats-section {
+    padding: 50px 0 !important;
+  }
+  
+  .footer-section {
+    padding: 60px 0 30px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --section-padding-desktop: 50px;
+    --content-spacing: 30px;
+  }
 }

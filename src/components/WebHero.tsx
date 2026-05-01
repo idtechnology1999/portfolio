@@ -59,10 +59,12 @@ export default function Hero() {
       id="hero"
       className="d-flex align-items-center position-relative"
       style={{
-        height: "100vh",
-        backgroundColor: "#fff",
-        color: "#0c0c0c",
+        minHeight: "100vh",
+        background: "linear-gradient(135deg, #1a1f3a 0%, #2a3150 100%)",
+        color: "#fff",
         overflow: "hidden",
+        margin: 0,
+        padding: 0,
       }}
     >
       <div className="container">
@@ -84,13 +86,13 @@ export default function Hero() {
           {/* Company Text */}
           <div className="col-12 col-lg-6 order-2 order-lg-1" data-aos="fade-up">
             <div className="hero-text">
-              <h1 style={{ color: "#0c0c0c", fontWeight: "700", fontSize: "3rem" }}>ID TECH</h1>
-              <h3 style={{ color: "#FF8C00", fontWeight: "700", fontSize: "1.8rem", marginBottom: "1.5rem" }}>
+              <h1 style={{ color: "#fff", fontWeight: "700", fontSize: "3rem" }}>ID TECH</h1>
+              <h3 style={{ color: "#FFA500", fontWeight: "700", fontSize: "1.8rem", marginBottom: "1.5rem" }}>
                 {subtitle}
                 <span className="blinking-cursor">|</span>
               </h3>
 
-              <p style={{ color: "#666", fontSize: "1.1rem", lineHeight: "1.6" }} className="mb-4">
+              <p style={{ color: "#b8bcc8", fontSize: "1.1rem", lineHeight: "1.6" }} className="mb-4">
                 Delivering Innovative Technology Solutions — Web & Mobile Applications
               </p>
 
@@ -103,10 +105,11 @@ export default function Hero() {
                     style={{
                       padding: "6px 15px",
                       borderRadius: "25px",
-                      backgroundColor: "#e0e0e0",
-                      color: "#0c0c0cff",
+                      backgroundColor: "rgba(255, 165, 0, 0.15)",
+                      color: "#fff",
                       fontWeight: "500",
-                      fontSize: "0.9rem"
+                      fontSize: "0.9rem",
+                      border: "1px solid rgba(255, 165, 0, 0.3)"
                     }}
                   >
                     {skill}

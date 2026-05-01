@@ -17,10 +17,10 @@ export default function Skills() {
   },[])
 
   return (
-    <section id="skills" className="skills-section text-center py-5">
+    <section id="skills" className="skills-section text-center">
       <div className="container">
         <h2 className="section-title mb-3">Skills & Expertise</h2>
-        <p className="section-desc mx-auto mb-5">
+        <p className="section-desc mx-auto mb-4">
           We are a global team dedicated to end-to-end Digital Solution Development.
         </p>
 

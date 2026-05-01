@@ -28,7 +28,7 @@ export default function Portfolio() {
     },
   ];
   return (
-    <section id="projects" className="portfolio-section py-5">
+    <section id="projects" className="portfolio-section">
       <div className="container text-center">
         <h2
           className="section-title mb-3"
@@ -38,7 +38,7 @@ export default function Portfolio() {
           My Projects
         </h2>
         <p
-          className="section-desc mb-5"
+          className="section-desc mb-4"
           data-aos="fade-up"
           data-aos-duration="1000"
         >

@@ -1,72 +1,157 @@
 .contact-section {
-  background: #f9f9f9;
-  padding: 70px 0;
+  background: linear-gradient(135deg, #1a1f3a 0%, #2a3150 100%);
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Title Style - matches brand */
+.contact-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="1" fill="rgba(255,165,0,0.1)"/></svg>');
+  opacity: 0.3;
+}
+
+.section-badge {
+  display: inline-block;
+  padding: 8px 20px;
+  background: rgba(255, 140, 0, 0.15);
+  border: 1px solid rgba(255, 140, 0, 0.3);
+  border-radius: 25px;
+  color: #b8bcc8;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
 .section-title {
-  color: #ffa500;
-  font-size: 2.3rem;
+  color: #FFA500;
+  font-size: 2.5rem;
   font-weight: 700;
+  margin-bottom: 15px;
+  position: relative;
+  z-index: 1;
 }
 
 .section-desc {
-  color: #555;
+  color: #b8bcc8;
   max-width: 700px;
   margin: 0 auto;
-  font-size: 1.05rem;
-  line-height: 1.7;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  position: relative;
+  z-index: 1;
 }
 
-/* Card Style */
 .contact-card {
-  background: #fff;
-  padding: 30px 35px;
-  border-radius: 18px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-  transition: 0.3s;
+  background: rgba(42, 49, 80, 0.6);
+  border: 1px solid rgba(255, 165, 0, 0.2);
+  padding: 40px 35px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  transition: all 0.4s ease;
+  backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 1;
+  height: 100%;
 }
 
 .contact-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-10px);
+  border-color: #FF8C00;
+  box-shadow: 0 20px 60px rgba(255, 140, 0, 0.3);
+  background: rgba(42, 49, 80, 0.8);
 }
 
-/* Buttons */
+.contact-card h5 {
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.contact-card h5 i {
+  font-size: 1.5rem;
+}
+
 .contact-btn {
   display: block;
   width: 100%;
-  padding: 12px;
-  border-radius: 10px;
+  padding: 14px;
+  border-radius: 12px;
   text-decoration: none;
   font-weight: 600;
-  margin-bottom: 12px;
-  transition: 0.3s;
+  font-size: 1.05rem;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
 }
 
-/* WhatsApp Green */
 .whatsapp-btn {
-  background: #25d366;
+  background: linear-gradient(135deg, #FF8C00, #FFA500);
   color: #fff;
+  box-shadow: 0 5px 20px rgba(255, 140, 0, 0.4);
 }
 
 .whatsapp-btn:hover {
-  background: #1ebf58;
+  background: linear-gradient(135deg, #FFA500, #FFD700);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(255, 140, 0, 0.6);
+  color: #fff;
 }
 
-/* Locations */
 .location-item {
-  font-size: 1.05rem;
-  color: #333;
-  margin-bottom: 8px;
+  font-size: 1.1rem;
+  color: #b8bcc8;
+  margin-bottom: 15px;
+  padding: 12px;
+  background: rgba(255, 165, 0, 0.1);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 165, 0, 0.2);
+  transition: all 0.3s ease;
 }
 
-/* Responsive tweaks */
-@media (max-width: 576px) {
+.location-item:hover {
+  background: rgba(255, 165, 0, 0.2);
+  border-color: #FF8C00;
+  color: #fff;
+}
+
+.contact-icon-wrap {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #FF8C00, #FFA500);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 2rem;
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(255, 140, 0, 0.4);
+  transition: transform 0.3s ease;
+}
+
+.contact-card:hover .contact-icon-wrap {
+  transform: scale(1.1) rotate(5deg);
+}
+
+@media (max-width: 768px) {
+  .contact-section {
+    padding: 60px 0;
+  }
+
   .section-title {
-    font-size: 1.9rem;
+    font-size: 1.8rem;
   }
 
   .contact-card {
-    padding: 25px 20px;
+    padding: 30px 20px;
   }
 }

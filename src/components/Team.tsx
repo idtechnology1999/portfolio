@@ -30,10 +30,10 @@ export default function Team() {
   }, []);
 
   return (
-    <section id="team" className="team-section py-5 text-center">
+    <section id="team" className="team-section text-center">
       <div className="container">
         <h2 className="section-title mb-3">Meet Our Team</h2>
-        <p className="section-desc mb-5">
+        <p className="section-desc mb-4">
           Our passionate professionals combine creativity, technology, and strategy.
         </p>
 

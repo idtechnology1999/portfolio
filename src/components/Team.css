@@ -1,20 +1,20 @@
 .team-section {
-  background: #f9f9f9;
-  padding-top: 80px;
-  padding-bottom: 80px;
+  background: #fff;
+  padding: 80px 0;
 }
 
 .section-title {
-  font-size: 2.4rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: #ffa500;
   letter-spacing: 0.5px;
+  margin-bottom: 15px;
 }
 
 .section-desc {
   color: #555;
   max-width: 700px;
-  margin: 0 auto;
+  margin: 0 auto 50px;
   font-size: 1.05rem;
   line-height: 1.8;
 }
@@ -70,8 +70,11 @@
   border-radius: 50%;
 } 
 
-/* 📱 Responsive Adjustments */
 @media (max-width: 768px) {
+  .team-section {
+    padding: 60px 0;
+  }
+
   .manager-img {
     width: 120px;
     height: 120px;
@@ -87,11 +90,12 @@
   }
 
   .section-title {
-    font-size: 1.9rem;
+    font-size: 1.8rem;
   }
 
   .section-desc {
     font-size: 1rem;
+    margin-bottom: 40px;
   }
 }
 
