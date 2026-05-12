@@ -18,44 +18,51 @@ export default function Quiz() {
   useEffect(() => {
     const token = localStorage.getItem("quiz_token");
     const user = localStorage.getItem("quiz_user");
-    if (!token || !user) return nav("/quiz/login");
+    if (!token || !user) { nav("/quiz/login"); return; }
 
-    checkSubmitted(user).then(({ data }) => {
-      if (data.alreadySubmitted) {
-        localStorage.removeItem("quiz_token");
-        localStorage.setItem("quiz_result", JSON.stringify(data.result));
-        nav("/quiz/result");
-      } else {
-        fetchQuestions().then(({ data }) => setQuestions(data.questions)).catch(() => nav("/quiz/login"));
+    const load = async () => {
+      try {
+        const { data: check } = await checkSubmitted(user);
+        if (check.alreadySubmitted) {
+          localStorage.removeItem("quiz_token");
+          localStorage.setItem("quiz_result", JSON.stringify(check.result));
+          nav("/quiz/result");
+        } else {
+          const { data: q } = await fetchQuestions();
+          setQuestions(q.questions);
+        }
+      } catch {
+        nav("/quiz/login");
       }
-    }).catch(() => nav("/quiz/login"));
+    };
+    load();
   }, [nav]);
 
-  useEffect(() => {
-    if (timeLeft <= 0) { handleSubmit(); return; }
-    const t = setInterval(() => setTimeLeft(p => p - 1), 1000);
-    return () => clearInterval(t);
-  }, [timeLeft]);
-
-  const handleSubmit = useCallback(async () => {
+  const handleSubmit = useCallback(() => {
     if (submitting) return;
     setSubmitting(true);
     const token = localStorage.getItem("quiz_token");
     if (!token) return nav("/quiz/login");
-    try {
-      const { data } = await submitQuiz(token, answers);
+    submitQuiz(token, answers).then(function (response) {
+      var data = response.data;
       localStorage.removeItem("quiz_token");
       localStorage.setItem("quiz_result", JSON.stringify(data.result));
       nav("/quiz/result");
-    } catch (err: any) {
-      const msg = err.response?.data?.message || "Submission failed. Try again.";
+    }).catch(function (err) {
+      var msg = (err.response && err.response.data && err.response.data.message) || "Submission failed. Try again.";
       alert(msg);
-      if (msg.includes("already taken")) {
+      if (msg.indexOf("already taken") !== -1) {
         nav("/quiz/login");
       }
       setSubmitting(false);
-    }
+    });
   }, [answers, nav, submitting]);
+
+  useEffect(function () {
+    if (timeLeft <= 0) { handleSubmit(); return; }
+    var t = setInterval(function () { setTimeLeft(function (p) { return p - 1; }); }, 1000);
+    return function () { clearInterval(t); };
+  }, [timeLeft]);
 
   const handleOption = (qId: number, opt: string) => {
     setAnswers(prev => ({ ...prev, [qId]: opt }));
