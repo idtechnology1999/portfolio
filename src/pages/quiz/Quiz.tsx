@@ -2,8 +2,8 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchQuestions, submitQuiz, checkSubmitted } from "../../services/quizApi";
 
-const NUMBER_OF_QUESTIONS = 15;
-const MINUTES = 15;
+const NUMBER_OF_QUESTIONS = 50;
+const MINUTES = 30;
 const ARROW_LEFT = String.fromCodePoint(0x2190);
 const ARROW_RIGHT = String.fromCodePoint(0x2192);
 
