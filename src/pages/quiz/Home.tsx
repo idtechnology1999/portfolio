@@ -29,6 +29,9 @@ export default function QuizHome() {
             </>
           )}
         </div>
+        <Link to="/quiz/admin" className="btn px-4 py-2 mt-4" style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.6)", borderRadius: 10, border: "1px solid rgba(255,255,255,0.1)", fontSize: "0.85rem" }}>
+          {"Admin - View Results " + String.fromCodePoint(0x2192)}
+        </Link>
       </div>
     </div>
   );
