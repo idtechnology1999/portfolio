@@ -9,15 +9,11 @@ const MyPortfolio = () => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true,
-      easing: 'ease-out'
-    });
+    AOS.init({ duration: 1000, once: true, easing: 'ease-out' });
 
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
-      const sections = ['home', 'about', 'skills', 'experience', 'contact'];
+      const sections = ['home', 'about', 'skills', 'experience', 'projects', 'contact'];
       const current = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -45,20 +41,80 @@ const MyPortfolio = () => {
 
   const skills = [
     { name: "Full-Stack Development", level: 90, icon: "💻" },
-    { name: "Computer Repair & Troubleshooting", level: 95, icon: "🔧" },
     { name: "Mobile App Development", level: 85, icon: "📱" },
+    { name: "Computer Repair & Troubleshooting", level: 95, icon: "🔧" },
     { name: "Microsoft Office Suite", level: 92, icon: "📊" },
     { name: "Leadership & Team Management", level: 88, icon: "👥" },
-    { name: "Technical Training", level: 90, icon: "🎓" }
+    { name: "Technical Training", level: 90, icon: "🎓" },
   ];
 
   const projects = [
-    { title: "Vision Spark Website", description: "A sleek, responsive business website designed to showcase marketing solutions with modern design and fast performance.", link: "http://visionsparkmarketingsolution.com/", tags: ["Marketing", "Business"] },
-    { title: "E-Library", description: "A modern, digital library platform for online academic resources and study materials, built with a clean dashboard interface.", link: "http://chrislewando.com/", tags: ["Education", "Platform"] },
-    { title: "Computer Engineering Chatbot", description: "A smart chatbot system for Computer Engineering Department, built to automate student queries and department information.", link: "https://github.com/idtechnology1999/Department-Chatbot.git", tags: ["AI", "Education"] },
-    { title: "Mama Bee's Kitchen", description: "Professional restaurant website with online menu, ordering system, and elegant design showcasing authentic Nigerian cuisine.", link: "https://mamabeeskitchen.com/", tags: ["Restaurant", "E-Commerce"] },
-    { title: "Munat Tech", description: "Modern technology company website featuring IT solutions, software development services, and digital transformation consulting.", link: "https://munattech.online/", tags: ["Tech", "Business"] },
-    { title: "5NJ Limited", description: "Corporate business website for a leading Nigerian company, featuring company profile and services portfolio.", link: "https://www.5njlimited.com/", tags: ["Corporate", "Business"] }
+    {
+      title: "I-Shelf App",
+      description: "A collaborative digital platform that brings researchers, authors, and students together in one space — enabling seamless sharing of academic resources, research papers, and study materials. Built with a mobile-first approach for on-the-go access.",
+      link: "https://github.com/idtechnology1999",
+      tags: ["React Native", "Node.js", "MongoDB", "Expo"],
+      type: "mobile",
+      badge: "Mobile App",
+      highlight: true,
+    },
+    {
+      title: "IDTECH Academy App",
+      description: "A full-featured mobile application for IDTECH Real World Academy. Allows students to track their online classes, monitor payment records, view course progress, and receive real-time updates — all from their smartphones.",
+      link: "https://github.com/idtechnology1999",
+      tags: ["React Native", "Expo", "Node.js", "MongoDB"],
+      type: "mobile",
+      badge: "Mobile App",
+      highlight: true,
+    },
+    {
+      title: "Vision Spark Website",
+      description: "A sleek, responsive business website designed to showcase marketing solutions with modern design and fast performance.",
+      link: "http://visionsparkmarketingsolution.com/",
+      tags: ["React", "Node.js", "CSS"],
+      type: "web",
+      badge: "Web App",
+    },
+    {
+      title: "E-Library",
+      description: "A modern digital library platform for online academic resources and study materials, built with a clean dashboard interface.",
+      link: "http://chrislewando.com/",
+      tags: ["React", "Node.js", "MongoDB"],
+      type: "web",
+      badge: "Web App",
+    },
+    {
+      title: "Computer Engineering Chatbot",
+      description: "A smart chatbot system for a Computer Engineering Department, built to automate student queries and deliver department information instantly.",
+      link: "https://github.com/idtechnology1999/Department-Chatbot.git",
+      tags: ["Python", "NLP", "React"],
+      type: "ai",
+      badge: "AI / Bot",
+    },
+    {
+      title: "Mama Bee's Kitchen",
+      description: "Professional restaurant website with online menu, ordering system, and elegant design showcasing authentic Nigerian cuisine.",
+      link: "https://mamabeeskitchen.com/",
+      tags: ["React", "Node.js", "E-Commerce"],
+      type: "web",
+      badge: "Web App",
+    },
+    {
+      title: "Munat Tech",
+      description: "Modern technology company website featuring IT solutions, software development services, and digital transformation consulting.",
+      link: "https://munattech.online/",
+      tags: ["React", "JavaScript", "CSS"],
+      type: "web",
+      badge: "Web App",
+    },
+    {
+      title: "5NJ Limited",
+      description: "Corporate business website for a leading Nigerian company, featuring company profile, services portfolio, and contact management.",
+      link: "https://www.5njlimited.com/",
+      tags: ["React", "CMS", "Business"],
+      type: "web",
+      badge: "Web App",
+    },
   ];
 
   return (
@@ -77,8 +133,11 @@ const MyPortfolio = () => {
           <ul className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
             {['Home', 'About', 'Skills', 'Experience', 'Projects', 'Contact'].map((item) => (
               <li key={item}>
-                <a href={`#${item.toLowerCase()}`} className={`nav-link ${activeSection === item.toLowerCase() ? 'active' : ''}`}
-                  onClick={(e) => { e.preventDefault(); scrollToSection(item.toLowerCase()); }}>
+                <a
+                  href={`#${item.toLowerCase()}`}
+                  className={`nav-link ${activeSection === item.toLowerCase() ? 'active' : ''}`}
+                  onClick={(e) => { e.preventDefault(); scrollToSection(item.toLowerCase()); }}
+                >
                   {item}
                 </a>
               </li>
@@ -90,6 +149,7 @@ const MyPortfolio = () => {
         </div>
       </nav>
 
+      {/* HERO */}
       <section id="home" className="hero">
         <div className="container">
           <div className="hero-content">
@@ -101,22 +161,24 @@ const MyPortfolio = () => {
                 <span className="title-primary">Owolabi Idowu</span>
                 <span className="title-gradient">Computer Engineer</span>
               </h1>
-              <p className="hero-subtitle">Full-Stack Developer | Hardware Specialist | Tech Educator</p>
+              <p className="hero-subtitle">Full-Stack Developer · Mobile App Developer · Hardware Specialist</p>
               <p className="hero-description">
-                Passionate Computer Engineering graduate with hands-on experience in full-stack development, 
-                hardware repair, and technical training. Ready to bring innovative solutions to your team.
+                Computer Engineering graduate with hands-on experience building web platforms,
+                cross-platform mobile applications, and embedded systems. I turn ideas into
+                products — from backend APIs to polished mobile UIs.
               </p>
               <div className="hero-buttons">
-                <button className="btn btn-primary" onClick={() => scrollToSection('experience')}>
-                  View Experience →
+                <button className="btn btn-primary" onClick={() => scrollToSection('projects')}>
+                  View Projects →
                 </button>
                 <button className="btn btn-secondary" onClick={() => scrollToSection('contact')}>
                   Get In Touch ✉
                 </button>
               </div>
               <div className="hero-social">
-                <a href="mailto:owolabiidowu99@gmail.com" className="social-link">📧</a>
-                <a href="tel:+2347086292944" className="social-link">📱</a>
+                <a href="mailto:owolabiidowu99@gmail.com" className="social-link" title="Email">📧</a>
+                <a href="tel:+2347086292944" className="social-link" title="Phone">📱</a>
+                <a href="https://github.com/idtechnology1999" target="_blank" rel="noopener noreferrer" className="social-link" title="GitHub">🐙</a>
               </div>
             </div>
             <div className="hero-image" data-aos="fade-left" data-aos-delay="200">
@@ -131,6 +193,7 @@ const MyPortfolio = () => {
         </div>
       </section>
 
+      {/* ABOUT */}
       <section id="about" className="about">
         <div className="container">
           <div className="section-header" data-aos="fade-up">
@@ -143,17 +206,17 @@ const MyPortfolio = () => {
                 <div className="card-icon">🎯</div>
                 <h3 className="card-title">Career Objective</h3>
                 <p className="card-text">
-                  A passionate and self-motivated Computer Engineering graduate with hands-on experience in computer hardware repair, 
-                  full-stack website development, and mobile app development. Eager to apply technical skills and creative solutions 
-                  to real-world challenges.
+                  A self-motivated Computer Engineering graduate with proven experience building full-stack web
+                  applications, cross-platform mobile apps, and hardware solutions. Eager to apply deep technical
+                  skills and a product-oriented mindset to real-world engineering challenges.
                 </p>
               </div>
               <div className="about-card card-cyan" data-aos="fade-right" data-aos-delay="200">
                 <div className="card-icon">📍</div>
                 <h3 className="card-title">Personal Info</h3>
                 <p className="card-text">
-                  <strong>Location:</strong> Ogbomosho, Oyo State, Nigeria<br/>
-                  <strong>Date of Birth:</strong> February 2, 1999<br/>
+                  <strong>Location:</strong> Ogbomosho, Oyo State, Nigeria<br />
+                  <strong>Date of Birth:</strong> February 2, 1999<br />
                   <strong>Nationality:</strong> Nigerian
                 </p>
               </div>
@@ -164,8 +227,8 @@ const MyPortfolio = () => {
                   <span>🎓</span>
                   <h4>Education</h4>
                 </div>
-                <p><strong>HND Computer Engineering Technology</strong> - The Polytechnic Ibadan (2021-2024)</p>
-                <p><strong>ND Computer Engineering Technology</strong> - The Polytechnic Ibadan (2020-2021)</p>
+                <p><strong>HND Computer Engineering Technology</strong> — The Polytechnic Ibadan (2021–2024)</p>
+                <p><strong>ND Computer Engineering Technology</strong> — The Polytechnic Ibadan (2020–2021)</p>
               </div>
               <div className="stats" data-aos="fade-left" data-aos-delay="200">
                 <div className="stat-item stat-violet">
@@ -173,8 +236,8 @@ const MyPortfolio = () => {
                   <div className="stat-label">Years Experience</div>
                 </div>
                 <div className="stat-item stat-cyan">
-                  <div className="stat-number">5+</div>
-                  <div className="stat-label">Organizations</div>
+                  <div className="stat-number">8+</div>
+                  <div className="stat-label">Projects Built</div>
                 </div>
                 <div className="stat-item stat-fuchsia">
                   <div className="stat-number">100%</div>
@@ -186,6 +249,7 @@ const MyPortfolio = () => {
         </div>
       </section>
 
+      {/* SKILLS */}
       <section id="skills" className="skills">
         <div className="container">
           <div className="section-header" data-aos="fade-up">
@@ -211,6 +275,7 @@ const MyPortfolio = () => {
         </div>
       </section>
 
+      {/* EXPERIENCE */}
       <section id="experience" className="experience">
         <div className="container">
           <div className="section-header" data-aos="fade-up">
@@ -219,6 +284,7 @@ const MyPortfolio = () => {
           </div>
           <div className="experience-list">
             <div className="exp-item" data-aos="fade-up" data-aos-delay="100">
+              <div className="exp-dot"></div>
               <div className="exp-header">
                 <div>
                   <h3 className="exp-title">NYSC Corps Member</h3>
@@ -226,18 +292,20 @@ const MyPortfolio = () => {
                 </div>
                 <span className="exp-date">Present</span>
               </div>
-              <p className="exp-desc">Place of Primary Assignment</p>
+              <p className="exp-desc">Place of Primary Assignment — teaching computer skills, supporting tech infrastructure.</p>
             </div>
             <div className="exp-item" data-aos="fade-up" data-aos-delay="200">
+              <div className="exp-dot"></div>
               <div className="exp-header">
                 <div>
                   <h3 className="exp-title">Industrial Training</h3>
-                  <p className="exp-company">International Institute of Tropical Agriculture</p>
+                  <p className="exp-company">International Institute of Tropical Agriculture (IITA)</p>
                 </div>
-                <span className="exp-date">2021 - 2022</span>
+                <span className="exp-date">2021 – 2022</span>
               </div>
             </div>
             <div className="exp-item" data-aos="fade-up" data-aos-delay="300">
+              <div className="exp-dot"></div>
               <div className="exp-header">
                 <div>
                   <h3 className="exp-title">Tech Tutor</h3>
@@ -247,19 +315,21 @@ const MyPortfolio = () => {
               </div>
             </div>
             <div className="exp-item" data-aos="fade-up" data-aos-delay="400">
+              <div className="exp-dot"></div>
               <div className="exp-header">
                 <div>
                   <h3 className="exp-title">SIWES Intern</h3>
                   <p className="exp-company">Nigerian Institute of Social and Economic Research (NISER)</p>
                 </div>
-                <span className="exp-date">2019 - 2020</span>
+                <span className="exp-date">2019 – 2020</span>
               </div>
             </div>
             <div className="exp-item" data-aos="fade-up" data-aos-delay="500">
+              <div className="exp-dot"></div>
               <div className="exp-header">
                 <div>
-                  <h3 className="exp-title">Computer Teacher/Operator</h3>
-                  <p className="exp-company">The Vine Nur/Pry School Olorisa-oko Ibadan</p>
+                  <h3 className="exp-title">Computer Teacher / Operator</h3>
+                  <p className="exp-company">The Vine Nursery & Primary School, Ibadan</p>
                 </div>
                 <span className="exp-date">2018</span>
               </div>
@@ -268,16 +338,28 @@ const MyPortfolio = () => {
         </div>
       </section>
 
+      {/* PROJECTS */}
       <section id="projects" className="projects">
         <div className="container">
           <div className="section-header" data-aos="fade-up">
             <h2 className="section-title">Featured Projects</h2>
             <div className="section-line"></div>
-            <p className="section-description">A showcase of my recent work across various technologies</p>
+            <p className="section-description">Web platforms, mobile apps, and AI tools — built end to end</p>
           </div>
           <div className="projects-grid">
             {projects.map((project, index) => (
-              <div key={index} className="project-card" data-aos="zoom-in" data-aos-delay={index * 100}>
+              <div
+                key={index}
+                className={`project-card ${project.highlight ? 'project-card--featured' : ''}`}
+                data-aos="zoom-in"
+                data-aos-delay={index * 80}
+              >
+                <div className={`project-card-top project-card-top--${project.type}`}>
+                  <span className="project-type-badge">
+                    {project.type === 'mobile' ? '📱' : project.type === 'ai' ? '🤖' : '🌐'} {project.badge}
+                  </span>
+                  {project.highlight && <span className="project-featured-label">Featured</span>}
+                </div>
                 <div className="project-body">
                   <h3 className="project-title">{project.title}</h3>
                   <p className="project-description">{project.description}</p>
@@ -287,7 +369,7 @@ const MyPortfolio = () => {
                     ))}
                   </div>
                   <a href={project.link} target="_blank" rel="noopener noreferrer" className="project-link">
-                    View Project →
+                    {project.type === 'mobile' ? 'View on GitHub →' : 'View Project →'}
                   </a>
                 </div>
               </div>
@@ -296,6 +378,7 @@ const MyPortfolio = () => {
         </div>
       </section>
 
+      {/* CONTACT */}
       <section id="contact" className="contact">
         <div className="container">
           <div className="section-header" data-aos="fade-up">
@@ -333,7 +416,7 @@ const MyPortfolio = () => {
       <footer className="footer">
         <div className="container">
           <p>&copy; 2025 Owolabi Idowu. All rights reserved.</p>
-          <p className="footer-subtitle">Computer Engineering Technology | Full-Stack Developer</p>
+          <p className="footer-subtitle">Computer Engineering Technology · Full-Stack & Mobile Developer</p>
         </div>
       </footer>
     </div>
