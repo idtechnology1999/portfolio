@@ -3,7 +3,21 @@ import './MyPortfolio.css';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-const ROLES = ['Full-Stack Developer', 'Mobile App Developer', 'Hardware Specialist', 'Tech Educator'];
+import {
+  FaGithub, FaEnvelope, FaPhone, FaMapMarkerAlt, FaGraduationCap,
+  FaCode, FaMobileAlt, FaTools, FaUsers, FaChalkboardTeacher,
+  FaGlobe, FaRocket, FaRobot, FaLaptopCode, FaServer,
+} from 'react-icons/fa';
+import { MdLocationOn, MdSchool } from 'react-icons/md';
+
+const ROLES = [
+  'Full-Stack Developer',
+  'Backend Engineer',
+  'Website Developer',
+  'Mobile App Developer',
+  'Hardware Specialist',
+  'Tech Educator',
+];
 
 const MyPortfolio = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,24 +25,23 @@ const MyPortfolio = () => {
   const [scrolled, setScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  // Typing animation
   const [displayRole, setDisplayRole] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [roleIndex, setRoleIndex] = useState(0);
   const typingRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const currentRole = ROLES[roleIndex];
-    const speed = isDeleting ? 45 : 95;
+    const current = ROLES[roleIndex];
+    const speed = isDeleting ? 40 : 90;
 
     typingRef.current = setTimeout(() => {
       if (!isDeleting) {
-        setDisplayRole(currentRole.slice(0, displayRole.length + 1));
-        if (displayRole.length + 1 === currentRole.length) {
+        setDisplayRole(current.slice(0, displayRole.length + 1));
+        if (displayRole.length + 1 === current.length) {
           setTimeout(() => setIsDeleting(true), 1800);
         }
       } else {
-        setDisplayRole(currentRole.slice(0, displayRole.length - 1));
+        setDisplayRole(current.slice(0, displayRole.length - 1));
         if (displayRole.length - 1 === 0) {
           setIsDeleting(false);
           setRoleIndex((prev) => (prev + 1) % ROLES.length);
@@ -63,133 +76,126 @@ const MyPortfolio = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (sectionId: string) => {
-    const el = document.getElementById(sectionId);
-    if (el) {
-      window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - 80, behavior: 'smooth' });
-    }
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - 80, behavior: 'smooth' });
     setIsMenuOpen(false);
   };
 
   const skills = [
-    { name: "Full-Stack Development", level: 90, icon: "💻" },
-    { name: "Mobile App Development", level: 85, icon: "📱" },
-    { name: "Computer Repair & Troubleshooting", level: 95, icon: "🔧" },
-    { name: "Microsoft Office Suite", level: 92, icon: "📊" },
-    { name: "Leadership & Team Management", level: 88, icon: "👥" },
-    { name: "Technical Training", level: 90, icon: "🎓" },
+    { name: 'Full-Stack Development',        level: 90, Icon: FaCode },
+    { name: 'Mobile App Development',         level: 85, Icon: FaMobileAlt },
+    { name: 'Computer Repair & Troubleshooting', level: 95, Icon: FaTools },
+    { name: 'Microsoft Office Suite',         level: 92, Icon: FaLaptopCode },
+    { name: 'Leadership & Team Management',   level: 88, Icon: FaUsers },
+    { name: 'Technical Training',             level: 90, Icon: FaChalkboardTeacher },
   ];
 
   const techStack = [
-    { category: "Frontend", techs: ["React", "TypeScript", "HTML5", "CSS3", "Tailwind CSS"] },
-    { category: "Backend", techs: ["Node.js", "Express.js", "REST APIs", "Python"] },
-    { category: "Mobile", techs: ["React Native", "Expo", "Android"] },
-    { category: "Database", techs: ["MongoDB", "MySQL", "AsyncStorage"] },
-    { category: "Tools", techs: ["Git", "GitHub", "VS Code", "Postman", "Figma"] },
+    { category: 'Frontend',  techs: ['React', 'TypeScript', 'HTML5', 'CSS3', 'Tailwind CSS'] },
+    { category: 'Backend',   techs: ['Node.js', 'Express.js', 'REST APIs', 'Python'] },
+    { category: 'Mobile',    techs: ['React Native', 'Expo', 'Android'] },
+    { category: 'Database',  techs: ['MongoDB', 'MySQL', 'AsyncStorage'] },
+    { category: 'Tools',     techs: ['Git', 'GitHub', 'VS Code', 'Postman', 'Figma'] },
   ];
 
   const services = [
     {
-      icon: "🌐",
-      title: "Web Development",
-      description: "Full-stack web applications built with React on the frontend and Node.js/Express on the backend. Clean, fast, and scalable.",
-      tags: ["React", "Node.js", "MongoDB"],
+      Icon: FaGlobe,
+      title: 'Web Development',
+      description: 'Full-stack web applications built with React on the frontend and Node.js/Express on the backend. Clean, fast, and scalable.',
+      tags: ['React', 'Node.js', 'MongoDB'],
     },
     {
-      icon: "📱",
-      title: "Mobile App Development",
-      description: "Cross-platform mobile apps using React Native & Expo. From student portals to research platforms — delivered on iOS & Android.",
-      tags: ["React Native", "Expo", "REST API"],
+      Icon: FaMobileAlt,
+      title: 'Mobile App Development',
+      description: 'Cross-platform mobile apps using React Native & Expo — from student portals to research platforms, delivered on iOS & Android.',
+      tags: ['React Native', 'Expo', 'REST API'],
     },
     {
-      icon: "🔧",
-      title: "Hardware & Support",
-      description: "Computer hardware diagnosis, repair, and maintenance. Networking setup, OS installation, and IT support for individuals and organisations.",
-      tags: ["Hardware Repair", "Networking", "IT Support"],
+      Icon: FaTools,
+      title: 'Hardware & IT Support',
+      description: 'Computer hardware diagnosis, repair, and maintenance. Networking setup, OS installation, and IT support for individuals and organisations.',
+      tags: ['Hardware Repair', 'Networking', 'IT Support'],
     },
   ];
 
   const allProjects = [
     {
-      title: "I-Shelf App",
-      description: "A collaborative digital platform that brings researchers, authors, and students together — enabling seamless sharing of academic resources, research papers, and study materials. Mobile-first approach for on-the-go access.",
-      link: "https://github.com/idtechnology1999",
-      tags: ["React Native", "Node.js", "MongoDB", "Expo"],
-      type: "mobile",
-      badge: "Mobile App",
-      highlight: true,
+      title: 'I-Shelf App',
+      description: 'A collaborative digital platform that brings researchers, authors, and students together — enabling seamless sharing of academic resources, research papers, and study materials.',
+      link: 'https://github.com/idtechnology1999',
+      tags: ['React Native', 'Node.js', 'MongoDB', 'Expo'],
+      type: 'mobile', badge: 'Mobile App', highlight: true,
     },
     {
-      title: "IDTECH Academy App",
-      description: "Full-featured mobile application for IDTECH Real World Academy. Students track online classes, monitor payment records, view course progress, and receive real-time updates — all from their smartphones.",
-      link: "https://github.com/idtechnology1999",
-      tags: ["React Native", "Expo", "Node.js", "MongoDB"],
-      type: "mobile",
-      badge: "Mobile App",
-      highlight: true,
+      title: 'IDTECH Academy App',
+      description: 'Full-featured mobile application for IDTECH Real World Academy. Students track online classes, monitor payment records, and view course progress in real time.',
+      link: 'https://github.com/idtechnology1999',
+      tags: ['React Native', 'Expo', 'Node.js', 'MongoDB'],
+      type: 'mobile', badge: 'Mobile App', highlight: true,
     },
     {
-      title: "Vision Spark Website",
-      description: "Sleek, responsive business website showcasing marketing solutions with modern design and fast performance.",
-      link: "http://visionsparkmarketingsolution.com/",
-      tags: ["React", "Node.js", "CSS"],
-      type: "web",
-      badge: "Web App",
+      title: 'Vision Spark Website',
+      description: 'Sleek, responsive business website showcasing marketing solutions with modern design and fast performance.',
+      link: 'http://visionsparkmarketingsolution.com/',
+      tags: ['React', 'Node.js', 'CSS'],
+      type: 'web', badge: 'Web App',
     },
     {
-      title: "E-Library",
-      description: "Modern digital library platform for online academic resources and study materials, with a clean dashboard interface.",
-      link: "http://chrislewando.com/",
-      tags: ["React", "Node.js", "MongoDB"],
-      type: "web",
-      badge: "Web App",
+      title: 'E-Library',
+      description: 'Modern digital library platform for online academic resources and study materials, with a clean dashboard interface.',
+      link: 'http://chrislewando.com/',
+      tags: ['React', 'Node.js', 'MongoDB'],
+      type: 'web', badge: 'Web App',
     },
     {
-      title: "Computer Engineering Chatbot",
-      description: "Smart chatbot for a Computer Engineering Department — automates student queries and delivers department information instantly.",
-      link: "https://github.com/idtechnology1999/Department-Chatbot.git",
-      tags: ["Python", "NLP", "React"],
-      type: "ai",
-      badge: "AI / Bot",
+      title: 'Computer Engineering Chatbot',
+      description: 'Smart chatbot for a Computer Engineering Department — automates student queries and delivers department information instantly.',
+      link: 'https://github.com/idtechnology1999/Department-Chatbot.git',
+      tags: ['Python', 'NLP', 'React'],
+      type: 'ai', badge: 'AI / Bot',
     },
     {
       title: "Mama Bee's Kitchen",
-      description: "Professional restaurant website with online menu, ordering system, and elegant design showcasing authentic Nigerian cuisine.",
-      link: "https://mamabeeskitchen.com/",
-      tags: ["React", "Node.js", "E-Commerce"],
-      type: "web",
-      badge: "Web App",
+      description: 'Professional restaurant website with online menu, ordering system, and elegant design showcasing authentic Nigerian cuisine.',
+      link: 'https://mamabeeskitchen.com/',
+      tags: ['React', 'Node.js', 'E-Commerce'],
+      type: 'web', badge: 'Web App',
     },
     {
-      title: "Munat Tech",
-      description: "Technology company website featuring IT solutions, software development services, and digital transformation consulting.",
-      link: "https://munattech.online/",
-      tags: ["React", "JavaScript", "CSS"],
-      type: "web",
-      badge: "Web App",
+      title: 'Munat Tech',
+      description: 'Technology company website featuring IT solutions, software development services, and digital transformation consulting.',
+      link: 'https://munattech.online/',
+      tags: ['React', 'JavaScript', 'CSS'],
+      type: 'web', badge: 'Web App',
     },
     {
-      title: "5NJ Limited",
-      description: "Corporate business website for a leading Nigerian company — company profile, services portfolio, and contact management.",
-      link: "https://www.5njlimited.com/",
-      tags: ["React", "CMS", "Business"],
-      type: "web",
-      badge: "Web App",
+      title: '5NJ Limited',
+      description: 'Corporate business website for a leading Nigerian company — company profile, services portfolio, and contact management.',
+      link: 'https://www.5njlimited.com/',
+      tags: ['React', 'CMS', 'Business'],
+      type: 'web', badge: 'Web App',
     },
   ];
 
   const [activeFilter, setActiveFilter] = useState('all');
   const filters = [
-    { key: 'all', label: 'All Projects' },
-    { key: 'mobile', label: '📱 Mobile' },
-    { key: 'web', label: '🌐 Web' },
-    { key: 'ai', label: '🤖 AI' },
+    { key: 'all',    label: 'All Projects' },
+    { key: 'mobile', label: 'Mobile' },
+    { key: 'web',    label: 'Web' },
+    { key: 'ai',     label: 'AI' },
   ];
   const projects = activeFilter === 'all' ? allProjects : allProjects.filter(p => p.type === activeFilter);
 
+  const typeIcon = (type: string) => {
+    if (type === 'mobile') return <FaMobileAlt />;
+    if (type === 'ai')     return <FaRobot />;
+    return <FaGlobe />;
+  };
+
   return (
     <div className="portfolio">
-      {/* Scroll progress bar */}
       <div className="scroll-progress" style={{ width: `${scrollProgress}%` }} />
 
       <div className="hero-bg">
@@ -208,11 +214,9 @@ const MyPortfolio = () => {
           <ul className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
             {['Home', 'About', 'Services', 'Skills', 'Experience', 'Projects', 'Contact'].map((item) => (
               <li key={item}>
-                <a
-                  href={`#${item.toLowerCase()}`}
+                <a href={`#${item.toLowerCase()}`}
                   className={`nav-link ${activeSection === item.toLowerCase() ? 'active' : ''}`}
-                  onClick={(e) => { e.preventDefault(); scrollToSection(item.toLowerCase()); }}
-                >
+                  onClick={(e) => { e.preventDefault(); scrollToSection(item.toLowerCase()); }}>
                   {item}
                 </a>
               </li>
@@ -235,9 +239,7 @@ const MyPortfolio = () => {
               </div>
               <h1 className="hero-title">
                 <span className="title-primary">Owolabi Idowu</span>
-                <span className="title-typed">
-                  {displayRole}<span className="cursor">|</span>
-                </span>
+                <span className="title-typed">{displayRole}<span className="cursor">|</span></span>
               </h1>
               <p className="hero-description">
                 Computer Engineering graduate who builds things — full-stack web platforms,
@@ -246,21 +248,21 @@ const MyPortfolio = () => {
               </p>
               <div className="hero-buttons">
                 <button className="btn btn-primary" onClick={() => scrollToSection('projects')}>
-                  View My Work →
+                  View My Work <FaRocket />
                 </button>
                 <button className="btn btn-secondary" onClick={() => scrollToSection('contact')}>
-                  Hire Me ✉
+                  Hire Me <FaEnvelope />
                 </button>
               </div>
               <div className="hero-social">
                 <a href="mailto:owolabiidowu99@gmail.com" className="social-link" title="Email">
-                  <span>📧</span>
+                  <FaEnvelope />
                 </a>
                 <a href="tel:+2347086292944" className="social-link" title="Call">
-                  <span>📞</span>
+                  <FaPhone />
                 </a>
                 <a href="https://github.com/idtechnology1999" target="_blank" rel="noopener noreferrer" className="social-link" title="GitHub">
-                  <span>🐙</span>
+                  <FaGithub />
                 </a>
               </div>
             </div>
@@ -270,9 +272,9 @@ const MyPortfolio = () => {
                 <div className="image-container">
                   <img src="/images/myimage.png" alt="Owolabi Idowu" />
                 </div>
-                <div className="image-float image-float-1">React Native</div>
-                <div className="image-float image-float-2">Node.js</div>
-                <div className="image-float image-float-3">MongoDB</div>
+                <div className="image-float image-float-1"><FaMobileAlt style={{marginRight:'5px'}}/> React Native</div>
+                <div className="image-float image-float-2"><FaServer style={{marginRight:'5px'}}/> Node.js</div>
+                <div className="image-float image-float-3"><FaCode style={{marginRight:'5px'}}/> MongoDB</div>
               </div>
             </div>
           </div>
@@ -290,7 +292,7 @@ const MyPortfolio = () => {
           <div className="about-content">
             <div className="about-cards">
               <div className="about-card card-orange" data-aos="fade-right" data-aos-delay="100">
-                <div className="card-icon">🎯</div>
+                <div className="card-icon"><FaRocket /></div>
                 <h3 className="card-title">Career Objective</h3>
                 <p className="card-text">
                   A self-motivated Computer Engineering graduate with proven experience building full-stack web
@@ -299,7 +301,7 @@ const MyPortfolio = () => {
                 </p>
               </div>
               <div className="about-card card-yellow" data-aos="fade-right" data-aos-delay="200">
-                <div className="card-icon">📍</div>
+                <div className="card-icon"><MdLocationOn /></div>
                 <h3 className="card-title">Personal Info</h3>
                 <p className="card-text">
                   <strong>Location:</strong> Ogbomosho, Oyo State, Nigeria<br />
@@ -311,7 +313,7 @@ const MyPortfolio = () => {
             <div className="about-info">
               <div className="info-card" data-aos="fade-left" data-aos-delay="100">
                 <div className="info-header">
-                  <span>🎓</span>
+                  <MdSchool className="info-icon" />
                   <h4>Education</h4>
                 </div>
                 <div className="edu-item">
@@ -354,7 +356,7 @@ const MyPortfolio = () => {
           <div className="services-grid">
             {services.map((s, i) => (
               <div key={i} className="service-card" data-aos="fade-up" data-aos-delay={i * 120}>
-                <div className="service-icon">{s.icon}</div>
+                <div className="service-icon"><s.Icon /></div>
                 <h3 className="service-title">{s.title}</h3>
                 <p className="service-desc">{s.description}</p>
                 <div className="service-tags">
@@ -379,7 +381,7 @@ const MyPortfolio = () => {
               <div key={skill.name} className="skill-item" data-aos="fade-up" data-aos-delay={index * 80}>
                 <div className="skill-header">
                   <div className="skill-info">
-                    <div className="skill-icon">{skill.icon}</div>
+                    <div className="skill-icon"><skill.Icon /></div>
                     <h3>{skill.name}</h3>
                   </div>
                   <span className="skill-percent">{skill.level}%</span>
@@ -391,7 +393,6 @@ const MyPortfolio = () => {
             ))}
           </div>
 
-          {/* Tech Stack */}
           <div className="tech-stack" data-aos="fade-up" data-aos-delay="200">
             <h3 className="tech-stack-title">Technologies I Work With</h3>
             <div className="tech-categories">
@@ -418,11 +419,11 @@ const MyPortfolio = () => {
           </div>
           <div className="timeline">
             {[
-              { title: "NYSC Corps Member", company: "Digital World Tech Academy", date: "Present", desc: "Place of Primary Assignment — delivering computer skills training and supporting tech infrastructure." },
-              { title: "Industrial Training", company: "International Institute of Tropical Agriculture (IITA)", date: "2021 – 2022", desc: "" },
-              { title: "Tech Tutor", company: "Parch Computer Hub", date: "2021", desc: "" },
-              { title: "SIWES Intern", company: "Nigerian Institute of Social and Economic Research (NISER)", date: "2019 – 2020", desc: "" },
-              { title: "Computer Teacher / Operator", company: "The Vine Nursery & Primary School, Ibadan", date: "2018", desc: "" },
+              { title: 'NYSC Corps Member', company: 'Digital World Tech Academy', date: 'Present', desc: 'Place of Primary Assignment — delivering computer skills training and supporting tech infrastructure.' },
+              { title: 'Industrial Training', company: 'International Institute of Tropical Agriculture (IITA)', date: '2021 – 2022', desc: '' },
+              { title: 'Tech Tutor', company: 'Parch Computer Hub', date: '2021', desc: '' },
+              { title: 'SIWES Intern', company: 'Nigerian Institute of Social and Economic Research (NISER)', date: '2019 – 2020', desc: '' },
+              { title: 'Computer Teacher / Operator', company: 'The Vine Nursery & Primary School, Ibadan', date: '2018', desc: '' },
             ].map((exp, i) => (
               <div key={i} className="timeline-item" data-aos="fade-up" data-aos-delay={i * 100}>
                 <div className="timeline-marker">
@@ -455,14 +456,15 @@ const MyPortfolio = () => {
             <p className="section-description">Web platforms, mobile apps, and AI tools — built end to end</p>
           </div>
 
-          {/* Filter tabs */}
           <div className="project-filters" data-aos="fade-up">
             {filters.map(f => (
-              <button
-                key={f.key}
+              <button key={f.key}
                 className={`filter-btn ${activeFilter === f.key ? 'filter-btn--active' : ''}`}
-                onClick={() => setActiveFilter(f.key)}
-              >
+                onClick={() => setActiveFilter(f.key)}>
+                {f.key === 'mobile' && <FaMobileAlt />}
+                {f.key === 'web'    && <FaGlobe />}
+                {f.key === 'ai'     && <FaRobot />}
+                {f.key === 'all'    && <FaCode />}
                 {f.label}
               </button>
             ))}
@@ -470,28 +472,23 @@ const MyPortfolio = () => {
 
           <div className="projects-grid">
             {projects.map((project, index) => (
-              <div
-                key={project.title}
+              <div key={project.title}
                 className={`project-card ${project.highlight ? 'project-card--featured' : ''}`}
-                data-aos="zoom-in"
-                data-aos-delay={index * 70}
-              >
+                data-aos="zoom-in" data-aos-delay={index * 70}>
                 <div className={`project-card-top project-card-top--${project.type}`}>
                   <span className="project-type-badge">
-                    {project.type === 'mobile' ? '📱' : project.type === 'ai' ? '🤖' : '🌐'} {project.badge}
+                    {typeIcon(project.type)} {project.badge}
                   </span>
-                  {project.highlight && <span className="project-featured-label">⭐ Featured</span>}
+                  {project.highlight && <span className="project-featured-label">Featured</span>}
                 </div>
                 <div className="project-body">
                   <h3 className="project-title">{project.title}</h3>
                   <p className="project-description">{project.description}</p>
                   <div className="project-tags">
-                    {project.tags.map((tag) => (
-                      <span key={tag} className="project-tag">{tag}</span>
-                    ))}
+                    {project.tags.map(tag => <span key={tag} className="project-tag">{tag}</span>)}
                   </div>
                   <a href={project.link} target="_blank" rel="noopener noreferrer" className="project-link">
-                    {project.type === 'mobile' ? 'View on GitHub →' : 'View Project →'}
+                    {project.type === 'mobile' ? 'View on GitHub' : 'View Project'} →
                   </a>
                 </div>
               </div>
@@ -511,19 +508,19 @@ const MyPortfolio = () => {
           </div>
           <div className="contact-grid">
             <div className="contact-card card-orange" data-aos="flip-left" data-aos-delay="100">
-              <span className="contact-icon">📧</span>
+              <span className="contact-icon"><FaEnvelope /></span>
               <h3>Email</h3>
               <a href="mailto:owolabiidowu99@gmail.com">owolabiidowu99@gmail.com</a>
               <a href="mailto:owolabiidowu99@yahoo.com">owolabiidowu99@yahoo.com</a>
             </div>
             <div className="contact-card card-yellow" data-aos="flip-left" data-aos-delay="200">
-              <span className="contact-icon">📱</span>
+              <span className="contact-icon"><FaPhone /></span>
               <h3>Phone</h3>
               <a href="tel:+2347086292944">+234 708 629 2944</a>
               <a href="tel:+2348159548029">+234 815 954 8029</a>
             </div>
             <div className="contact-card card-green" data-aos="flip-left" data-aos-delay="300">
-              <span className="contact-icon">📍</span>
+              <span className="contact-icon"><FaMapMarkerAlt /></span>
               <h3>Location</h3>
               <p>Ogbomosho, Oyo State</p>
               <p>Nigeria</p>
@@ -531,7 +528,7 @@ const MyPortfolio = () => {
           </div>
           <div className="contact-cta" data-aos="fade-up" data-aos-delay="400">
             <button className="btn btn-primary btn-lg" onClick={() => window.location.href = 'mailto:owolabiidowu99@gmail.com'}>
-              Send Me a Message ✉
+              Send Me a Message <FaEnvelope />
             </button>
           </div>
         </div>
@@ -541,9 +538,9 @@ const MyPortfolio = () => {
       <footer className="footer">
         <div className="container">
           <div className="footer-inner">
-            <div className="footer-brand">
+            <div className="nav-brand">
               <div className="brand-icon brand-icon--sm">OI</div>
-              <span className="brand-text">Owolabi Idowu</span>
+              <span className="brand-text footer-brand-text">Owolabi Idowu</span>
             </div>
             <div className="footer-links">
               {['About', 'Services', 'Projects', 'Contact'].map(item => (
@@ -554,12 +551,12 @@ const MyPortfolio = () => {
               ))}
             </div>
             <div className="footer-social">
-              <a href="mailto:owolabiidowu99@gmail.com" title="Email">📧</a>
-              <a href="https://github.com/idtechnology1999" target="_blank" rel="noopener noreferrer" title="GitHub">🐙</a>
+              <a href="mailto:owolabiidowu99@gmail.com" title="Email"><FaEnvelope /></a>
+              <a href="https://github.com/idtechnology1999" target="_blank" rel="noopener noreferrer" title="GitHub"><FaGithub /></a>
             </div>
           </div>
           <div className="footer-bottom">
-            <p>&copy; 2025 Owolabi Idowu · Computer Engineer · Full-Stack & Mobile Developer</p>
+            <p>&copy; 2025 Owolabi Idowu · Computer Engineer · Full-Stack &amp; Mobile Developer</p>
           </div>
         </div>
       </footer>

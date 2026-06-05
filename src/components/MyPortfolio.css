@@ -328,7 +328,8 @@ body {
   justify-content: center;
   background: var(--bg);
   border-radius: 0.6rem;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
+  color: var(--dark);
   text-decoration: none;
   transition: all 0.25s;
   border: 1px solid var(--border);
@@ -337,6 +338,7 @@ body {
 .social-link:hover {
   background: linear-gradient(135deg, var(--orange), var(--yellow));
   border-color: transparent;
+  color: white;
   transform: translateY(-3px);
   box-shadow: 0 6px 18px rgba(255,140,0,0.3);
 }
@@ -494,7 +496,18 @@ section {
 .card-yellow { border-left: 4px solid var(--yellow); }
 .card-green  { border-left: 4px solid var(--green); }
 
-.card-icon { font-size: 2.25rem; margin-bottom: 0.85rem; }
+.card-icon {
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(135deg, var(--orange), var(--yellow));
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: white;
+  font-size: 1.35rem;
+}
 .card-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--black); }
 .card-text  { color: var(--muted); line-height: 1.7; font-size: 0.95rem; }
 .card-text strong { color: var(--dark); }
@@ -516,6 +529,7 @@ section {
 }
 
 .info-header span { font-size: 1.4rem; }
+.info-icon { font-size: 1.5rem; color: var(--orange); }
 .info-header h4 { font-size: 1.1rem; font-weight: 700; color: var(--black); }
 
 .edu-item { margin-bottom: 0.75rem; }
@@ -584,7 +598,19 @@ section {
 
 .service-card:hover::before { transform: scaleX(1); }
 
-.service-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+.service-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  background: linear-gradient(135deg, var(--orange), var(--yellow));
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 6px 18px rgba(255,140,0,0.25);
+}
 .service-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.65rem; color: var(--black); }
 .service-desc  { font-size: 0.9rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.25rem; }
 
@@ -633,14 +659,16 @@ section {
 .skill-info { display: flex; align-items: center; gap: 0.75rem; }
 
 .skill-icon {
-  width: 2.4rem;
-  height: 2.4rem;
-  background: linear-gradient(135deg, rgba(255,140,0,0.1), rgba(255,193,7,0.1));
+  width: 2.5rem;
+  height: 2.5rem;
+  background: linear-gradient(135deg, var(--orange), var(--yellow));
   border-radius: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.15rem;
+  font-size: 1.05rem;
+  color: white;
+  flex-shrink: 0;
 }
 
 .skill-info h3 { font-size: 1rem; font-weight: 600; color: var(--dark); }
@@ -792,6 +820,9 @@ section {
 }
 
 .filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
   padding: 0.55rem 1.35rem;
   border-radius: 999px;
   border: 1.5px solid var(--border);
@@ -851,12 +882,17 @@ section {
 .project-card-top--ai     { background: linear-gradient(135deg, #0ea5e9, #10b981); }
 
 .project-type-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   font-size: 0.7rem;
   font-weight: 700;
   color: #fff;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
+
+.project-type-badge svg { font-size: 0.85rem; }
 
 .project-featured-label {
   font-size: 0.66rem;
@@ -948,7 +984,19 @@ section {
   box-shadow: 0 14px 36px rgba(0,0,0,0.07);
 }
 
-.contact-icon { font-size: 2.25rem; display: block; margin-bottom: 0.85rem; }
+.contact-icon {
+  width: 3.25rem;
+  height: 3.25rem;
+  background: linear-gradient(135deg, var(--orange), var(--yellow));
+  border-radius: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  color: white;
+  margin: 0 auto 1rem;
+  box-shadow: 0 6px 18px rgba(255,140,0,0.25);
+}
 .contact-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--black); }
 
 .contact-card a,
@@ -981,7 +1029,7 @@ section {
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
-.footer-inner .brand-text { -webkit-text-fill-color: unset; color: white; }
+.footer-brand-text { -webkit-text-fill-color: white !important; color: white; }
 .footer-inner .brand-icon { box-shadow: none; }
 
 .footer-links {
@@ -1014,12 +1062,14 @@ section {
   background: rgba(255,255,255,0.07);
   border-radius: 0.5rem;
   font-size: 1rem;
+  color: rgba(255,255,255,0.7);
   text-decoration: none;
-  transition: background 0.2s, transform 0.2s;
+  transition: background 0.2s, transform 0.2s, color 0.2s;
 }
 
 .footer-social a:hover {
   background: var(--orange);
+  color: white;
   transform: translateY(-3px);
 }
 
