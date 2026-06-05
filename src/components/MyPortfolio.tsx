@@ -12,7 +12,7 @@ import { MdLocationOn, MdSchool } from 'react-icons/md';
 
 const ROLES = [
   'Full-Stack Developer',
-  'Backend Engineer',
+  'Backend Engineering',
   'Website Developer',
   'Mobile App Developer',
   'Hardware Specialist',
