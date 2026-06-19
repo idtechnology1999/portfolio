@@ -123,8 +123,8 @@ const MyPortfolio = () => {
   const allProjects = [
     {
       title: 'I-Shelf App',
-      description: 'A collaborative digital platform that brings researchers, authors, and students together — enabling seamless sharing of academic resources, research papers, and study materials.',
-      link: 'https://github.com/idtechnology1999',
+      description: 'A collaborative digital platform that brings researchers, authors, and students together — enabling seamless sharing of academic resources, research papers, and study materials. Now live on the Google Play Store.',
+      link: 'https://play.google.com/store/apps/details?id=com.ishelf.app',
       tags: ['React Native', 'Node.js', 'MongoDB', 'Expo'],
       type: 'mobile', badge: 'Mobile App', highlight: true,
     },
@@ -157,10 +157,17 @@ const MyPortfolio = () => {
       type: 'ai', badge: 'AI / Bot',
     },
     {
-      title: "Mama Bee's Kitchen",
-      description: 'Professional restaurant website with online menu, ordering system, and elegant design showcasing authentic Nigerian cuisine.',
-      link: 'https://mamabeeskitchen.com/',
-      tags: ['React', 'Node.js', 'E-Commerce'],
+      title: 'Selliberation',
+      description: 'Online learning and income opportunity platform teaching digital skills — freelancing, AI, content creation, and online business. Features video courses, membership tiers (Fish, Dolphin, Shark, Whale), and an affiliate programme where members earn while they learn.',
+      link: 'https://selliberation.co/',
+      tags: ['React', 'Node.js', 'E-Learning', 'Affiliate'],
+      type: 'web', badge: 'Web App',
+    },
+    {
+      title: 'TMJ Whole Foods',
+      description: 'E-commerce platform for healthy African grains, tubers, nuts, and seeds. Supports blood sugar control, gut health, and gluten-free nutrition — with Paystack payments, product tracking, recipes, and local & international shipping.',
+      link: 'https://tmjwholefoods.com/',
+      tags: ['React', 'E-Commerce', 'Paystack', 'Node.js'],
       type: 'web', badge: 'Web App',
     },
     {
@@ -488,7 +495,7 @@ const MyPortfolio = () => {
                     {project.tags.map(tag => <span key={tag} className="project-tag">{tag}</span>)}
                   </div>
                   <a href={project.link} target="_blank" rel="noopener noreferrer" className="project-link">
-                    {project.type === 'mobile' ? 'View on GitHub' : 'View Project'} →
+                    {project.link.includes('play.google.com') ? 'View on Play Store' : project.type === 'mobile' ? 'View on GitHub' : 'View Project'} →
                   </a>
                 </div>
               </div>
