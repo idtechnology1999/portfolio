@@ -4,7 +4,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 import {
-  FaGithub, FaEnvelope, FaPhone, FaMapMarkerAlt, FaGraduationCap,
+  FaGithub, FaEnvelope, FaPhone, FaMapMarkerAlt,
   FaCode, FaMobileAlt, FaTools, FaUsers, FaChalkboardTeacher,
   FaGlobe, FaRocket, FaRobot, FaLaptopCode, FaServer,
 } from 'react-icons/fa';
