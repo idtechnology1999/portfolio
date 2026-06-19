@@ -131,7 +131,7 @@ const MyPortfolio = () => {
     {
       title: 'IDTECH Academy App',
       description: 'Full-featured mobile application for IDTECH Real World Academy. Students track online classes, monitor payment records, and view course progress in real time.',
-      link: 'https://github.com/idtechnology1999',
+      link: 'https://github.com/idtechnology1999/IDTechApp1',
       tags: ['React Native', 'Expo', 'Node.js', 'MongoDB'],
       type: 'mobile', badge: 'Mobile App', highlight: true,
     },
@@ -152,7 +152,7 @@ const MyPortfolio = () => {
     {
       title: 'Computer Engineering Chatbot',
       description: 'Smart chatbot for a Computer Engineering Department — automates student queries and delivers department information instantly.',
-      link: 'https://github.com/idtechnology1999/Department-Chatbot.git',
+      link: 'https://github.com/idtechnology1999/Department-Chatbot',
       tags: ['Python', 'NLP', 'React'],
       type: 'ai', badge: 'AI / Bot',
     },
@@ -311,7 +311,7 @@ const MyPortfolio = () => {
                 <div className="card-icon"><MdLocationOn /></div>
                 <h3 className="card-title">Personal Info</h3>
                 <p className="card-text">
-                  <strong>Location:</strong> Ogbomosho, Oyo State, Nigeria<br />
+                  <strong>Location:</strong> No. 4 Tajudeen Alli Street, Ojokoro New Town, Ikorodu<br />
                   <strong>Date of Birth:</strong> February 2, 1999<br />
                   <strong>Nationality:</strong> Nigerian
                 </p>
@@ -529,8 +529,9 @@ const MyPortfolio = () => {
             <div className="contact-card card-green" data-aos="flip-left" data-aos-delay="300">
               <span className="contact-icon"><FaMapMarkerAlt /></span>
               <h3>Location</h3>
-              <p>Ogbomosho, Oyo State</p>
-              <p>Nigeria</p>
+              <p>No. 4 Tajudeen Alli Street</p>
+              <p>Ojokoro New Town, Ikorodu</p>
+              <p>Lagos State, Nigeria</p>
             </div>
           </div>
           <div className="contact-cta" data-aos="fade-up" data-aos-delay="400">

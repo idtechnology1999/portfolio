@@ -1103,10 +1103,11 @@ section {
   .nav-menu.active { left: 0; }
   .mobile-toggle { display: block; }
 
+  .hero            { padding: 6rem 0 3rem; }
   .hero-content,
   .about-content  { grid-template-columns: 1fr; text-align: center; }
   .hero-text      { order: 2; }
-  .hero-image     { order: 1; margin-top: 1rem; }
+  .hero-image     { order: 1; padding-top: 5rem; }
   .hero-title     { font-size: 2.6rem; }
   .hero-description { max-width: 100%; }
   .hero-buttons   { justify-content: center; }
@@ -1131,6 +1132,7 @@ section {
 }
 
 @media (max-width: 480px) {
+  .hero-image     { padding-top: 4.5rem; }
   .image-wrapper  { width: 11rem; height: 11rem; }
   .hero-title     { font-size: 2rem; }
   .section-title  { font-size: 1.75rem; }
